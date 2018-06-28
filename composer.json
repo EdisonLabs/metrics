@@ -1,11 +1,11 @@
 {
     "name": "edisonlabs/metrics",
     "type": "library",
-    "description": "PHP library that abstracts different metrics collectors.",
+    "description": "PHP library for collecting metrics.",
     "license": "GPL-2.0+",
     "autoload": {
         "psr-4": {
-            "edison\\metrics\\": "src/"
+            "EdisonLabs\\Metrics\\": "src/"
         }
     },
     "require-dev": {

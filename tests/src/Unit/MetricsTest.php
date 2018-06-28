@@ -1,6 +1,6 @@
 <?php
 
-namespace edisonlabs\metrics\Unit;
+namespace EdisonLabs\Metrics\Unit;
 
 use PHPUnit\Framework\TestCase;
 
