@@ -1,2 +1,8 @@
-# metrics
-PHP library that abstracts different metrics collectors
+# Metrics
+
+## Overview
+*Update this with a package description.*
+
+## Installation
+
+*Update this with a package installation.*
