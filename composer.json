@@ -8,6 +8,9 @@
             "EdisonLabs\\Metrics\\": "src/"
         }
     },
+    "require": {
+        "symfony/dependency-injection": "~4.0"
+    },
     "require-dev": {
         "phpunit/phpunit": "^6.5"
     }
