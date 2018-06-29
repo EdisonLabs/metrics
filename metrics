@@ -21,9 +21,9 @@
 //    die(1);
 //}
 
-//require EDISONLABS_COMPOSER_INSTALL;
+define('EDISONLABS_COMPOSER_INSTALL', '/home/jribeiro/Projects/git/composer/edison_metrics-8/vendor/autoload.php');
 
-require '/home/jribeiro/Projects/git/composer/edison_metrics-8/vendor/autoload.php';
+require EDISONLABS_COMPOSER_INSTALL;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
@@ -37,6 +37,6 @@ $containerBuilder->compile();
 $var = $containerBuilder->getServiceIds();
 echo "<pre>" . print_r($var, TRUE) . "</pre>";
 
-$service = $containerBuilder->get('EdisonLabs\Metrics\MetricCountSites');
+$service = $containerBuilder->get('EdisonLabs\Metrics\JeanMetricCountSites');
 $var = $service->getMetric();
 echo "<pre>" . print_r($var, TRUE) . "</pre>"; die;
