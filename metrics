@@ -25,18 +25,11 @@ define('EDISONLABS_COMPOSER_INSTALL', '/home/jribeiro/Projects/git/composer/edis
 
 require EDISONLABS_COMPOSER_INSTALL;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\Config\FileLocator;
-use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
+use EdisonLabs\Metrics\Command\MetricsCommand;
+use Symfony\Component\Console\Application;
 
-$containerBuilder = new ContainerBuilder();
-$loader = new PhpFileLoader($containerBuilder, new FileLocator(__DIR__));
-$loader->load('config/services.php');
-$containerBuilder->compile();
-
-$var = $containerBuilder->getServiceIds();
-echo "<pre>" . print_r($var, TRUE) . "</pre>";
-
-$service = $containerBuilder->get('EdisonLabs\Metrics\JeanMetricCountSites');
-$var = $service->getMetric();
-echo "<pre>" . print_r($var, TRUE) . "</pre>"; die;
+// Register and run command.
+$application = new Application();
+$application->add(new MetricsCommand());
+$application->setDefaultCommand('edisonlabs:metrics', true);
+$application->run();
