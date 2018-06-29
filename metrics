@@ -1,0 +1,42 @@
+#!/usr/bin/env php
+<?php
+
+//foreach (array(__DIR__ . '/../../autoload.php', __DIR__ . '/../vendor/autoload.php', __DIR__ . '/vendor/autoload.php') as $file) {
+//    if (file_exists($file)) {
+//        define('EDISONLABS_COMPOSER_INSTALL', $file);
+//        break;
+//    }
+//}
+//
+//unset($file);
+//
+//if (!defined('EDISONLABS_COMPOSER_INSTALL')) {
+//    fwrite(
+//        STDERR,
+//        'You need to set up the project dependencies using Composer:' . PHP_EOL . PHP_EOL .
+//        '    composer install' . PHP_EOL . PHP_EOL .
+//        'You can learn all about Composer on https://getcomposer.org/.' . PHP_EOL
+//    );
+//
+//    die(1);
+//}
+
+//require EDISONLABS_COMPOSER_INSTALL;
+
+require '/home/jribeiro/Projects/git/composer/edison_metrics-8/vendor/autoload.php';
+
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
+
+$containerBuilder = new ContainerBuilder();
+$loader = new PhpFileLoader($containerBuilder, new FileLocator(__DIR__));
+$loader->load('config/services.php');
+$containerBuilder->compile();
+
+$var = $containerBuilder->getServiceIds();
+echo "<pre>" . print_r($var, TRUE) . "</pre>";
+
+$service = $containerBuilder->get('EdisonLabs\Metrics\MetricCountSites');
+$var = $service->getMetric();
+echo "<pre>" . print_r($var, TRUE) . "</pre>"; die;
