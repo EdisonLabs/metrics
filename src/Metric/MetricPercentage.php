@@ -3,11 +3,11 @@
 namespace EdisonLabs\Metrics\Metric;
 
 /**
- * Class MetricPercent.
+ * Class MetricPercentage.
  *
  * @package EdisonLabs\Metrics\Metric
  */
-abstract class MetricPercent implements MetricInterface
+abstract class MetricPercentage implements MetricInterface
 {
 
     /**
@@ -25,7 +25,7 @@ abstract class MetricPercent implements MetricInterface
     protected $count;
 
     /**
-     * MetricPercent constructor.
+     * MetricPercentage constructor.
      *
      * @param MetricCount $total
      *   The MetricCount object for the total value.

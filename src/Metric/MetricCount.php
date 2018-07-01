@@ -33,7 +33,11 @@ abstract class MetricCount implements MetricInterface
      */
     public function getMetric()
     {
-        $count = $this->calculate();
+        static $count;
+
+        if (!isset($count)) {
+            $count = $this->calculate();
+        }
 
         return $count;
     }
