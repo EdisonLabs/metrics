@@ -9,8 +9,14 @@
         }
     },
     "require": {
-        "symfony/dependency-injection": "~4.0"
+        "symfony/config": "~4.0",
+        "symfony/console": "~4.0",
+        "symfony/dependency-injection": "~4.0",
+        "symfony/finder": "~4.0"
     },
+    "bin": [
+        "metrics"
+    ],
     "require-dev": {
         "phpunit/phpunit": "^6.5"
     }
