@@ -83,16 +83,16 @@ class MetricsCommand extends Command
             );
         }
 
-        $metrics_json = json_encode($metricsOutput);
-        $output->writeln($metrics_json);
+        $metricsJson = json_encode($metricsOutput);
+        $output->writeln($metricsJson);
     }
 
     /**
      * Outputs a table.
      *
-     * @param array $header
+     * @param array           $header
      *   An array containing the header columns.
-     * @param array $rows
+     * @param array           $rows
      *   An array containing the table rows.
      * @param OutputInterface $output
      *   Console output object.
@@ -171,8 +171,7 @@ class MetricsCommand extends Command
         $format = $input->getOption('format');
         if ('json' == $format) {
             $this->outputMetricsJson($output);
-        }
-        else {
+        } else {
             $this->outputMetricsTable($output);
         }
 

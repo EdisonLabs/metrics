@@ -78,16 +78,16 @@ class StorageHandler
     /**
      * Returns a storage by a given name.
      *
-     * @param string $storage_name
+     * @param string $storageName
      *   The storage name.
      *
      * @return object
      *   The storage object.
      */
-    public function getStorageByName($storage_name)
+    public function getStorageByName($storageName)
     {
         foreach ($this->getStorages() as $storage) {
-            if ($storage->getName() == $storage_name) {
+            if ($storage->getName() == $storageName) {
                 return $storage;
             }
         }
