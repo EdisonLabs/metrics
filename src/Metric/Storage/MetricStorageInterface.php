@@ -24,4 +24,11 @@ interface MetricStorageInterface
      */
     public function getDescription();
 
+    /**
+     * Saves the metrics to the storage.
+     *
+     * @return bool
+     *   Returns TRUE in case of success, FALSE otherwise.
+     */
+    public function save();
 }

@@ -61,7 +61,8 @@ class MetricsCommand extends Command
             ->setHelp('This command allows you to list and save the collected metrics.')
             ->addOption('format', null, InputOption::VALUE_REQUIRED, 'The output format: table, json', 'table')
             ->addOption('list-storages', null, InputOption::VALUE_NONE, 'List the available storages to save the metrics')
-            ->addOption('save', null, InputOption::VALUE_REQUIRED, 'Save the metrics to target storages');
+            ->addOption('save', null, InputOption::VALUE_REQUIRED, 'Save the metrics to target storages')
+            ->addOption('no-messages', null, InputOption::VALUE_NONE, 'Do not output messages');
         ;
     }
 
@@ -156,6 +157,8 @@ class MetricsCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $no_messages = $input->getOption('no-messages');
+
         // List storages.
         if ($input->getOption('list-storages')) {
             $this->outputStoragesTable($output);
@@ -186,9 +189,16 @@ class MetricsCommand extends Command
                 }
 
                 $storage->setMetrics($this->metrics);
-                $storage->save();
+                if ($storage->save()) {
+                    if (!$no_messages) {
+                        $this->io->success("Metrics have been saved to $storage_name");
+                    }
+                    continue;
+                }
 
-                $this->io->success("Metrics have been saved to $storage_name");
+                if (!$no_messages) {
+                    $this->io->warning("Unable to save metrics to storage $storage_name");
+                }
             }
         }
     }

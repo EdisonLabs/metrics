@@ -47,7 +47,7 @@ abstract class MetricStorage implements MetricStorageInterface
     }
 
     /**
-     * Saves the metrics to the storage.
+     * {@inheritdoc}
      */
     abstract public function save();
 }
