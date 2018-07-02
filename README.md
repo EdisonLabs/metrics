@@ -3,7 +3,7 @@
 # Metrics Collector
 
 ## Overview
-Simple library that provides base classes for you to easily extend and collect your custom metrics.
+Simple library that provides base classes to easily extend and collect custom metrics.
 
 ## Usage
 
@@ -129,7 +129,7 @@ composer dump-autoload
 
 ## Collecting metrics
 
-There are two ways to collect your metrics, programmatically and by command line.
+There are two ways to collect your metrics, programmatically and by command-line.
 
  #### Programmatically
  ```php
@@ -179,7 +179,24 @@ class SqLite extends AbstractMetricStorage
 }
 ```
 
-Use the command option `--save` to save your metrics.
+#### Programmatically
+```php
+// storage.php
+
+use EdisonLabs\Metrics\Collector;
+use EdisonLabs\Metrics\StorageHandler;
+
+$collector = new Collector();
+$metrics = $collector->getMetrics();
+
+$storageHandler = new StorageHandler();
+$storage = $storageHandler->getStorageByName('SQLite');
+$storage->setMetrics($metrics);
+$storage->save();
+```
+
+#### Command
+Use the option `--save` to list and save your metrics.
 ```
 metrics --save=SQLite
 ```

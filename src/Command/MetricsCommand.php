@@ -181,7 +181,7 @@ class MetricsCommand extends Command
             $storagesToSave = explode(',', $saveOption);
 
             foreach ($storagesToSave as $storageName) {
-                /** @var \EdisonLabs\Metrics\Metric\Storage\MetricStorage $storage */
+                /** @var \EdisonLabs\Metrics\Metric\Storage\AbstractMetricStorage $storage */
                 $storage = $this->storageHandler->getStorageByName($storageName);
 
                 if (!$storage) {
