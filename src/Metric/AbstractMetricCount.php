@@ -3,11 +3,9 @@
 namespace EdisonLabs\Metrics\Metric;
 
 /**
- * Class MetricCount.
- *
- * @package EdisonLabs\Metrics\Metric
+ * Class AbstractMetricCount.
  */
-abstract class MetricCount implements MetricInterface
+abstract class AbstractMetricCount implements MetricCountInterface
 {
 
     /**
@@ -19,14 +17,6 @@ abstract class MetricCount implements MetricInterface
      * {@inheritdoc}
      */
     abstract public function getDescription();
-
-    /**
-     * Calculates the count.
-     *
-     * @return int
-     *   The count value.
-     */
-    abstract public function calculate();
 
     /**
      * {@inheritdoc}
@@ -41,5 +31,4 @@ abstract class MetricCount implements MetricInterface
 
         return $count;
     }
-
 }

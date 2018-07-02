@@ -4,6 +4,9 @@ namespace EdisonLabs\Metrics;
 
 use EdisonLabs\Metrics\Metric\Storage\MetricStorageInterface;
 
+/**
+ * Class StorageHandler
+ */
 class StorageHandler
 {
 
@@ -40,17 +43,17 @@ class StorageHandler
      */
     public function setStorages()
     {
-        $container_builder = new ContainerBuilder();
-        $container_builder = $container_builder->getContainerBuilder();
+        $containerBuilder = new ContainerBuilder();
+        $containerBuilder = $containerBuilder->getContainerBuilder();
 
-        $services = $container_builder->getServiceIds();
+        $services = $containerBuilder->getServiceIds();
 
-        foreach ($services as $service_name) {
-            if (strpos($service_name, self::STORAGES_NAMESPACE) === false) {
+        foreach ($services as $serviceName) {
+            if (strpos($serviceName, self::STORAGES_NAMESPACE) === false) {
                 continue;
             }
 
-            $storage = $container_builder->get($service_name);
+            $storage = $containerBuilder->get($serviceName);
 
             // Sanity check by class type.
             if (!$storage instanceof MetricStorageInterface) {
@@ -81,12 +84,12 @@ class StorageHandler
      * @return object
      *   The storage object.
      */
-    public function getStorageByName($storage_name) {
+    public function getStorageByName($storage_name)
+    {
         foreach ($this->getStorages() as $storage) {
             if ($storage->getName() == $storage_name) {
                 return $storage;
             }
         }
     }
-
 }

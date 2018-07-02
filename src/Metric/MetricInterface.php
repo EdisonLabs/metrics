@@ -4,8 +4,6 @@ namespace EdisonLabs\Metrics\Metric;
 
 /**
  * Interface MetricInterface.
- *
- * @package EdisonLabs\Metrics\Metric
  */
 interface MetricInterface
 {
@@ -32,5 +30,4 @@ interface MetricInterface
      *   The metric value.
      */
     public function getMetric();
-
 }

@@ -3,11 +3,9 @@
 namespace EdisonLabs\Metrics\Metric;
 
 /**
- * Class MetricPercentage.
- *
- * @package EdisonLabs\Metrics\Metric
+ * Class AbstractMetricPercentage.
  */
-abstract class MetricPercentage implements MetricInterface
+abstract class AbstractMetricPercentage implements MetricInterface
 {
 
     /**
@@ -25,14 +23,14 @@ abstract class MetricPercentage implements MetricInterface
     protected $count;
 
     /**
-     * MetricPercentage constructor.
+     * AbstractMetricPercentage constructor.
      *
-     * @param MetricCount $total
-     *   The MetricCount object for the total value.
-     * @param MetricCount $count
-     *   The MetricCount object for the count value.
+     * @param MetricCountInterface $total
+     *   The MetricCountInterface object for the total value.
+     * @param MetricCountInterface $count
+     *   The MetricCountInterface object for the count value.
      */
-    public function __construct(MetricCount $total, MetricCount $count)
+    public function __construct(MetricCountInterface $total, MetricCountInterface $count)
     {
         $this->total = $total->getMetric();
         $this->count = $count->getMetric();
@@ -56,5 +54,4 @@ abstract class MetricPercentage implements MetricInterface
         // Round half up. Making 1.5 into 2 and 1.4 into 1.
         return round((100 * $this->count) / $this->total);
     }
-
 }

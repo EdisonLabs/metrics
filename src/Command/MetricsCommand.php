@@ -13,7 +13,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Class MetricsCommand
- * @package EdisonLabs\Metrics\Command
  */
 class MetricsCommand extends Command
 {
@@ -74,17 +73,17 @@ class MetricsCommand extends Command
      */
     protected function outputMetricsJson(OutputInterface $output)
     {
-        $metrics_output = array();
+        $metricsOutput = array();
         foreach ($this->metrics as $metric) {
             /** @var \EdisonLabs\Metrics\Metric\MetricInterface $metric */
-            $metrics_output[get_class($metric)] = array(
+            $metricsOutput[get_class($metric)] = array(
                 'name' => $metric->getName(),
                 'description' => $metric->getDescription(),
                 'value' => $metric->getMetric(),
             );
         }
 
-        $metrics_json = json_encode($metrics_output);
+        $metrics_json = json_encode($metricsOutput);
         $output->writeln($metrics_json);
     }
 
@@ -115,7 +114,8 @@ class MetricsCommand extends Command
      * @param OutputInterface $output
      *   Console output object.
      */
-    protected function outputStoragesTable(OutputInterface $output) {
+    protected function outputStoragesTable(OutputInterface $output)
+    {
         $header = array('Name', 'Description');
 
         $rows = array();
@@ -136,7 +136,8 @@ class MetricsCommand extends Command
      * @param OutputInterface $output
      *   Console output object.
      */
-    protected function outputMetricsTable(OutputInterface $output) {
+    protected function outputMetricsTable(OutputInterface $output)
+    {
         $header = array('Name', 'Description', 'Value');
 
         $rows = array();
@@ -157,17 +158,18 @@ class MetricsCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $no_messages = $input->getOption('no-messages');
+        $noMessages = $input->getOption('no-messages');
 
         // List storages.
         if ($input->getOption('list-storages')) {
             $this->outputStoragesTable($output);
+
             return;
         }
 
         // List metrics.
         $format = $input->getOption('format');
-        if ($format == 'json') {
+        if ('json' == $format) {
             $this->outputMetricsJson($output);
         }
         else {
@@ -175,32 +177,31 @@ class MetricsCommand extends Command
         }
 
         // Save metrics.
-        $save_option = $input->getOption('save');
-        if ($save_option) {
-            $storages_to_save = explode(',', $save_option);
+        $saveOption = $input->getOption('save');
+        if ($saveOption) {
+            $storagesToSave = explode(',', $saveOption);
 
-            foreach ($storages_to_save as $storage_name) {
+            foreach ($storagesToSave as $storageName) {
                 /** @var \EdisonLabs\Metrics\Metric\Storage\MetricStorage $storage */
-                $storage = $this->storageHandler->getStorageByName($storage_name);
+                $storage = $this->storageHandler->getStorageByName($storageName);
 
                 if (!$storage) {
-                    $this->io->warning("Unable to find storage $storage_name");
+                    $this->io->warning("Unable to find storage $storageName");
                     continue;
                 }
 
                 $storage->setMetrics($this->metrics);
                 if ($storage->save()) {
-                    if (!$no_messages) {
-                        $this->io->success("Metrics have been saved to $storage_name");
+                    if (!$noMessages) {
+                        $this->io->success("Metrics have been saved to $storageName");
                     }
                     continue;
                 }
 
-                if (!$no_messages) {
-                    $this->io->warning("Unable to save metrics to storage $storage_name");
+                if (!$noMessages) {
+                    $this->io->warning("Unable to save metrics to storage $storageName");
                 }
             }
         }
     }
-
 }

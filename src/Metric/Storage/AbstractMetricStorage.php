@@ -4,9 +4,8 @@ namespace EdisonLabs\Metrics\Metric\Storage;
 
 /**
  * Class MetricStorage
- * @package EdisonLabs\Metrics\Metric\Storage
  */
-abstract class MetricStorage implements MetricStorageInterface
+abstract class AbstractMetricStorage implements MetricStorageInterface
 {
 
     /**

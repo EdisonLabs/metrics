@@ -8,7 +8,6 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
 /**
  * Class ContainerBuilder
- * @package EdisonLabs\Metrics
  */
 class ContainerBuilder
 {
@@ -40,5 +39,4 @@ class ContainerBuilder
     {
         return $this->containerBuilder;
     }
-
 }

@@ -4,7 +4,6 @@ namespace EdisonLabs\Metrics\Metric\Storage;
 
 /**
  * Interface MetricStorageInterface
- * @package EdisonLabs\Metrics\Metric\Storage
  */
 interface MetricStorageInterface
 {

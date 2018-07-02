@@ -6,7 +6,6 @@ use EdisonLabs\Metrics\Metric\MetricInterface;
 
 /**
  * Class Collector
- * @package EdisonLabs\Metrics
  */
 class Collector
 {
@@ -38,33 +37,6 @@ class Collector
     }
 
     /**
-     * Set metrics to be collected.
-     *
-     * @throws \Exception
-     */
-    protected function setMetrics()
-    {
-        $container_builder = new ContainerBuilder();
-        $container_builder = $container_builder->getContainerBuilder();
-
-        $services = $container_builder->getServiceIds();
-        foreach ($services as $service_name) {
-            if (strpos($service_name, self::METRICS_NAMESPACE) === false) {
-                continue;
-            }
-
-            $metric = $container_builder->get($service_name);
-
-            // Sanity check by class type.
-            if (!$metric instanceof MetricInterface) {
-                continue;
-            }
-
-            $this->setMetric($metric);
-        }
-    }
-
-    /**
      * Returns the available metrics.
      *
      * @return array
@@ -75,4 +47,30 @@ class Collector
         return $this->metrics;
     }
 
+    /**
+     * Set metrics to be collected.
+     *
+     * @throws \Exception
+     */
+    protected function setMetrics()
+    {
+        $containerBuilder = new ContainerBuilder();
+        $containerBuilder = $containerBuilder->getContainerBuilder();
+
+        $services = $containerBuilder->getServiceIds();
+        foreach ($services as $serviceName) {
+            if (strpos($serviceName, self::METRICS_NAMESPACE) === false) {
+                continue;
+            }
+
+            $metric = $containerBuilder->get($serviceName);
+
+            // Sanity check by class type.
+            if (!$metric instanceof MetricInterface) {
+                continue;
+            }
+
+            $this->setMetric($metric);
+        }
+    }
 }
