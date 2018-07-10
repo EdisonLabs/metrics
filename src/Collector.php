@@ -81,8 +81,8 @@ class Collector
                 continue;
             }
 
-            $metric_groups = $metric->getGroups();
-            if (!empty($this->groups) && count(array_intersect($this->groups, $metric_groups)) == 0) {
+            $metricGroups = $metric->getGroups();
+            if (!empty($this->groups) && count(array_intersect($this->groups, $metricGroups)) == 0) {
                 continue;
             }
 
