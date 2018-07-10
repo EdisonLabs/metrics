@@ -25,15 +25,15 @@ abstract class AbstractMetricPercentage implements MetricInterface
     /**
      * AbstractMetricPercentage constructor.
      *
-     * @param MetricCountInterface $total
-     *   The MetricCountInterface object for the total value.
      * @param MetricCountInterface $count
+     *   The MetricCountInterface object for the total value.
+     * @param MetricCountInterface $total
      *   The MetricCountInterface object for the count value.
      */
-    public function __construct(MetricCountInterface $total, MetricCountInterface $count)
+    public function __construct(MetricCountInterface $count, MetricCountInterface $total)
     {
-        $this->total = $total->getMetric();
         $this->count = $count->getMetric();
+        $this->total = $total->getMetric();
     }
 
     /**
@@ -45,6 +45,15 @@ abstract class AbstractMetricPercentage implements MetricInterface
      * {@inheritdoc}
      */
     abstract public function getDescription();
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getGroups()
+    {
+        // No groups by default.
+        return array();
+    }
 
     /**
      * {@inheritdoc}

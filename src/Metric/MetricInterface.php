@@ -24,6 +24,14 @@ interface MetricInterface
     public function getDescription();
 
     /**
+     * Return the groups that this metric belongs to.
+     *
+     * @return array
+     *   A list of groups.
+     */
+    public function getGroups();
+
+    /**
      * Returns the metric value.
      *
      * @return mixed

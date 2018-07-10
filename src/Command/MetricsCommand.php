@@ -44,7 +44,12 @@ class MetricsCommand extends Command
             return;
         }
 
-        $collector = new Collector();
+        $groups = $input->getOption('groups');
+        if ($groups) {
+            $groups =  explode(',', $groups);
+        }
+
+        $collector = new Collector($groups);
 
         $this->metrics = $collector->getMetrics();
     }
@@ -61,7 +66,8 @@ class MetricsCommand extends Command
             ->addOption('format', null, InputOption::VALUE_REQUIRED, 'The output format: table, json', 'table')
             ->addOption('list-storages', null, InputOption::VALUE_NONE, 'List the available storages to save the metrics')
             ->addOption('save', null, InputOption::VALUE_REQUIRED, 'Save the metrics to target storages')
-            ->addOption('no-messages', null, InputOption::VALUE_NONE, 'Do not output messages');
+            ->addOption('no-messages', null, InputOption::VALUE_NONE, 'Do not output messages')
+            ->addOption('groups', null, InputOption::VALUE_REQUIRED, 'Collect metrics from specific groups only', array());
         ;
     }
 
@@ -79,6 +85,7 @@ class MetricsCommand extends Command
             $metricsOutput[get_class($metric)] = array(
                 'name' => $metric->getName(),
                 'description' => $metric->getDescription(),
+                'groups' => $metric->getGroups(),
                 'value' => $metric->getMetric(),
             );
         }
@@ -138,14 +145,17 @@ class MetricsCommand extends Command
      */
     protected function outputMetricsTable(OutputInterface $output)
     {
-        $header = array('Name', 'Description', 'Value');
+        $header = array('Name', 'Description', 'Groups', 'Value');
 
         $rows = array();
         foreach ($this->metrics as $metric) {
+            $groups = implode(', ', $metric->getGroups());
+
             /** @var \EdisonLabs\Metrics\Metric\MetricInterface $metric */
             $rows[] = array(
                 $metric->getName(),
                 $metric->getDescription(),
+                $groups,
                 $metric->getMetric(),
             );
         }

@@ -21,6 +21,15 @@ abstract class AbstractMetricCount implements MetricCountInterface
     /**
      * {@inheritdoc}
      */
+    public function getGroups()
+    {
+        // No groups by default.
+        return array();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getMetric()
     {
         static $count;

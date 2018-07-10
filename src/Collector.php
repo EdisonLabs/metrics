@@ -18,10 +18,21 @@ class Collector
     protected $metrics = array();
 
     /**
-     * Collector constructor.
+     * @var array
      */
-    public function __construct()
+    protected $groups;
+
+    /**
+     * Collector constructor.
+     *
+     * @param array $groups
+     *   A list containing the groups to filter for.
+     *
+     * @throws \Exception
+     */
+    public function __construct(array $groups = array())
     {
+        $this->groups = $groups;
         $this->setMetrics();
     }
 
@@ -67,6 +78,11 @@ class Collector
 
             // Sanity check by class type.
             if (!$metric instanceof MetricInterface) {
+                continue;
+            }
+
+            $metric_groups = $metric->getGroups();
+            if (!empty($this->groups) && count(array_intersect($this->groups, $metric_groups)) == 0) {
                 continue;
             }
 
