@@ -2,7 +2,7 @@
 
 namespace EdisonLabs\Metrics;
 
-use EdisonLabs\Metrics\Metric\Storage\MetricStorageInterface;
+use EdisonLabs\Metrics\Storage\MetricStorageInterface;
 
 /**
  * Class StorageHandler

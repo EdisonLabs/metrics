@@ -1,6 +1,6 @@
 <?php
 
-namespace EdisonLabs\Metrics\Metric\Storage;
+namespace EdisonLabs\Metrics\Storage;
 
 /**
  * Interface MetricStorageInterface

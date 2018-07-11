@@ -1,6 +1,6 @@
 <?php
 
-namespace EdisonLabs\Metrics\Metric\Storage;
+namespace EdisonLabs\Metrics\Storage;
 
 /**
  * Class MetricStorage
@@ -12,16 +12,6 @@ abstract class AbstractMetricStorage implements MetricStorageInterface
      * @var array
      */
     protected $metrics = array();
-
-    /**
-     * {@inheritdoc}
-     */
-    abstract public function getName();
-
-    /**
-     * {@inheritdoc}
-     */
-    abstract public function getDescription();
 
     /**
      * Set the metrics to be saved.
@@ -44,9 +34,4 @@ abstract class AbstractMetricStorage implements MetricStorageInterface
     {
         return $this->metrics;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    abstract public function save();
 }
