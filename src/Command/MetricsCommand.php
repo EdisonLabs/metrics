@@ -44,12 +44,19 @@ class MetricsCommand extends Command
             return;
         }
 
+        // Extract groups.
         $groups = $input->getOption('groups');
         if ($groups) {
             $groups =  explode(',', $groups);
         }
 
-        $collector = new Collector($groups);
+        // Extract custom parameters.
+        $params = $input->getOption('params');
+        if ($params) {
+            $params =  explode(',', $params);
+        }
+
+        $collector = new Collector($groups, $params);
 
         $this->metrics = $collector->getMetrics();
     }
@@ -67,7 +74,8 @@ class MetricsCommand extends Command
             ->addOption('list-storages', null, InputOption::VALUE_NONE, 'List the available storages to save the metrics')
             ->addOption('save', null, InputOption::VALUE_REQUIRED, 'Save the metrics to target storages')
             ->addOption('no-messages', null, InputOption::VALUE_NONE, 'Do not output messages')
-            ->addOption('groups', null, InputOption::VALUE_REQUIRED, 'Collect metrics from specific groups only', array());
+            ->addOption('groups', null, InputOption::VALUE_REQUIRED, 'Collect metrics from specific groups only', array())
+            ->addOption('params', null, InputOption::VALUE_REQUIRED, 'Pass custom parameters to metrics collector', array());
         ;
     }
 

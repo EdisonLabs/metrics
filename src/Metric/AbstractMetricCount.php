@@ -5,27 +5,16 @@ namespace EdisonLabs\Metrics\Metric;
 /**
  * Class AbstractMetricCount.
  */
-abstract class AbstractMetricCount implements MetricCountInterface
+abstract class AbstractMetricCount extends AbstractMetricBase
 {
 
     /**
-     * {@inheritdoc}
+     * Calculates the count.
+     *
+     * @return int
+     *   The count value.
      */
-    abstract public function getName();
-
-    /**
-     * {@inheritdoc}
-     */
-    abstract public function getDescription();
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getGroups()
-    {
-        // No groups by default.
-        return array();
-    }
+    abstract public function calculate();
 
     /**
      * {@inheritdoc}

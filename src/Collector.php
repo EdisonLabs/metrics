@@ -2,7 +2,7 @@
 
 namespace EdisonLabs\Metrics;
 
-use EdisonLabs\Metrics\Metric\MetricInterface;
+use EdisonLabs\Metrics\Metric\AbstractMetricBase;
 
 /**
  * Class Collector
@@ -23,26 +23,34 @@ class Collector
     protected $groups;
 
     /**
+     * @var array
+     */
+    protected $params;
+
+    /**
      * Collector constructor.
      *
      * @param array $groups
      *   A list containing the groups to filter for.
+     * @param array $params
+     *   A list containing the custom parameters.
      *
      * @throws \Exception
      */
-    public function __construct(array $groups = array())
+    public function __construct(array $groups = array(), array $params = array())
     {
         $this->groups = $groups;
+        $this->params = $params;
         $this->setMetrics();
     }
 
     /**
      * Register a metric to be collected.
      *
-     * @param MetricInterface $metric
+     * @param AbstractMetricBase $metric
      *   The Metric object.
      */
-    public function setMetric(MetricInterface $metric)
+    public function setMetric(AbstractMetricBase $metric)
     {
         $this->metrics[] = $metric;
     }
@@ -77,7 +85,7 @@ class Collector
             $metric = $containerBuilder->get($serviceName);
 
             // Sanity check by class type.
-            if (!$metric instanceof MetricInterface) {
+            if (!$metric instanceof AbstractMetricBase) {
                 continue;
             }
 
@@ -86,6 +94,7 @@ class Collector
                 continue;
             }
 
+            $metric->setParameters($this->params);
             $this->setMetric($metric);
         }
     }

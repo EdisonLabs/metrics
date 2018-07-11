@@ -5,7 +5,7 @@ namespace EdisonLabs\Metrics\Metric;
 /**
  * Class AbstractMetricPercentage.
  */
-abstract class AbstractMetricPercentage implements MetricInterface
+abstract class AbstractMetricPercentage extends AbstractMetricBase
 {
 
     /**
@@ -25,34 +25,15 @@ abstract class AbstractMetricPercentage implements MetricInterface
     /**
      * AbstractMetricPercentage constructor.
      *
-     * @param MetricCountInterface $count
-     *   The MetricCountInterface object for the total value.
-     * @param MetricCountInterface $total
-     *   The MetricCountInterface object for the count value.
+     * @param AbstractMetricCount $count
+     *   The AbstractMetricCount object for the total value.
+     * @param AbstractMetricCount $total
+     *   The AbstractMetricCount object for the count value.
      */
-    public function __construct(MetricCountInterface $count, MetricCountInterface $total)
+    public function __construct(AbstractMetricCount $count, AbstractMetricCount $total)
     {
         $this->count = $count->getMetric();
         $this->total = $total->getMetric();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    abstract public function getName();
-
-    /**
-     * {@inheritdoc}
-     */
-    abstract public function getDescription();
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getGroups()
-    {
-        // No groups by default.
-        return array();
     }
 
     /**
