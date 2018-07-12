@@ -87,7 +87,8 @@ class MetricsCommand extends Command
      * @return array
      *   The config array.
      */
-    protected function getConfigArray($config) {
+    protected function getConfigArray($config)
+    {
         if (empty($config)) {
             return array();
         }
@@ -118,13 +119,15 @@ class MetricsCommand extends Command
         $metricsOutput = array();
         foreach ($this->metrics as $metric) {
             /** @var \EdisonLabs\Metrics\Metric\MetricInterface $metric */
-            $metricsOutput[get_class($metric)] = array(
+            $metricsOutput['metrics'][get_class($metric)] = array(
                 'name' => $metric->getName(),
                 'description' => $metric->getDescription(),
                 'groups' => $metric->getGroups(),
                 'value' => $metric->getMetric(),
             );
         }
+
+        $metricsOutput['timestamp'] = time();
 
         $metricsJson = json_encode($metricsOutput);
         $output->writeln($metricsJson);
@@ -163,7 +166,7 @@ class MetricsCommand extends Command
 
         $rows = array();
         foreach ($this->storageHandler->getStorages() as $storage) {
-            /** @var \EdisonLabs\Metrics\Metric\Storage\MetricStorageInterface $storage */
+            /** @var \EdisonLabs\Metrics\Storage\MetricStorageInterface $storage */
             $rows[] = array(
                 $storage->getName(),
                 $storage->getDescription(),
@@ -227,7 +230,7 @@ class MetricsCommand extends Command
             $storagesToSave = explode(',', $saveOption);
 
             foreach ($storagesToSave as $storageName) {
-                /** @var \EdisonLabs\Metrics\Metric\Storage\AbstractMetricStorage $storage */
+                /** @var \EdisonLabs\Metrics\Storage\AbstractMetricStorage $storage */
                 $storage = $this->storageHandler->getStorageByName($storageName);
 
                 if (!$storage) {
