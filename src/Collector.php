@@ -25,22 +25,22 @@ class Collector
     /**
      * @var array
      */
-    protected $params;
+    protected $config;
 
     /**
      * Collector constructor.
      *
      * @param array $groups
      *   A list containing the groups to filter for.
-     * @param array $params
-     *   A list containing the custom parameters.
+     * @param array $config
+     *   The custom config array.
      *
      * @throws \Exception
      */
-    public function __construct(array $groups = array(), array $params = array())
+    public function __construct(array $groups = array(), array $config = array())
     {
         $this->groups = $groups;
-        $this->params = $params;
+        $this->config = $config;
         $this->setMetrics();
     }
 
@@ -94,7 +94,7 @@ class Collector
                 continue;
             }
 
-            $metric->setParameters($this->params);
+            $metric->setConfig($this->config);
             $this->setMetric($metric);
         }
     }

@@ -24,6 +24,22 @@ interface MetricInterface
     public function getDescription();
 
     /**
+     * Sets the metrics config.
+     *
+     * @param array $config
+     *   An array containing the metrics config.
+     */
+    public function setConfig(array $config);
+
+    /**
+     * Returns the metrics config.
+     *
+     * @return array
+     *   An array containing the metrics config.
+     */
+    public function getConfig();
+
+    /**
      * Return the groups that this metric belongs to.
      *
      * @return array

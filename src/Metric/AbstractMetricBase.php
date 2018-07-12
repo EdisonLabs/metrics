@@ -9,32 +9,26 @@ abstract class AbstractMetricBase implements MetricInterface
 {
 
     /**
-     * The metrics custom parameters.
+     * The metrics config.
      *
      * @var array
      */
-    protected $parameters = array();
+    protected $config;
 
     /**
-     * Sets the metrics custom parameters.
-     *
-     * @param array $parameters
-     *   An array containing the metrics parameters.
+     * {@inheritdoc}
      */
-    public function setParameters(array $parameters)
+    public function setConfig(array $config)
     {
-        $this->parameters = $parameters;
+        $this->config = $config;
     }
 
     /**
-     * Returns the metrics custom parameters.
-     *
-     * @return array
-     *   An array containing the metrics parameters.
+     * {@inheritdoc}
      */
-    public function getParameters()
+    public function getConfig()
     {
-        return $this->parameters;
+        return $this->config;
     }
 
     /**

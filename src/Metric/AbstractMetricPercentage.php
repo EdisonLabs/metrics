@@ -25,12 +25,12 @@ abstract class AbstractMetricPercentage extends AbstractMetricBase
     /**
      * AbstractMetricPercentage constructor.
      *
-     * @param AbstractMetricCount $count
-     *   The AbstractMetricCount object for the total value.
-     * @param AbstractMetricCount $total
-     *   The AbstractMetricCount object for the count value.
+     * @param AbstractMetricBase $count
+     *   The AbstractMetricBase object for the total value.
+     * @param AbstractMetricBase $total
+     *   The AbstractMetricBase object for the count value.
      */
-    public function __construct(AbstractMetricCount $count, AbstractMetricCount $total)
+    public function __construct(AbstractMetricBase $count, AbstractMetricBase $total)
     {
         $this->count = $count->getMetric();
         $this->total = $total->getMetric();

@@ -4,6 +4,7 @@ namespace EdisonLabs\Metrics\Command;
 
 use EdisonLabs\Metrics\Collector;
 use EdisonLabs\Metrics\StorageHandler;
+use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
@@ -44,19 +45,17 @@ class MetricsCommand extends Command
             return;
         }
 
-        // Extract groups.
+        // Extracts groups.
         $groups = $input->getOption('groups');
         if ($groups) {
             $groups =  explode(',', $groups);
         }
 
-        // Extract custom parameters.
-        $params = $input->getOption('params');
-        if ($params) {
-            $params =  explode(',', $params);
-        }
+        // Gets config.
+        $config = $input->getOption('config');
+        $config = $this->getConfigArray($config);
 
-        $collector = new Collector($groups, $params);
+        $collector = new Collector($groups, $config);
 
         $this->metrics = $collector->getMetrics();
     }
@@ -75,8 +74,37 @@ class MetricsCommand extends Command
             ->addOption('save', null, InputOption::VALUE_REQUIRED, 'Save the metrics to target storages')
             ->addOption('no-messages', null, InputOption::VALUE_NONE, 'Do not output messages')
             ->addOption('groups', null, InputOption::VALUE_REQUIRED, 'Collect metrics from specific groups only', array())
-            ->addOption('params', null, InputOption::VALUE_REQUIRED, 'Pass custom parameters to metrics collector', array());
+            ->addOption('config', null, InputOption::VALUE_REQUIRED, 'Pass custom config to the metrics, which can be a file or a string containing JSON format');
         ;
+    }
+
+    /**
+     * Converts and returns the config parameter value to array.
+     *
+     * @param string $config
+     *   The config string.
+     *
+     * @return array
+     *   The config array.
+     */
+    protected function getConfigArray($config) {
+        if (empty($config)) {
+            return array();
+        }
+
+        // If parameter config is a file.
+        if (file_exists($config)) {
+            $config = file_get_contents($config);
+        }
+
+        $config = trim($config);
+
+        $config = json_decode($config, true);
+        if (json_last_error() == JSON_ERROR_NONE) {
+            return $config;
+        }
+
+        throw new RuntimeException('Config parameter must be a valid JSON format');
     }
 
     /**

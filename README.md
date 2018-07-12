@@ -26,9 +26,9 @@ Create total of files metric.
 
 namespace EdisonLabs\Metrics\Counts;
 
-use EdisonLabs\Metrics\Metric\AbstractMetricCount;
+use EdisonLabs\Metrics\Metric\AbstractMetricBase;
 
-class TotalOfFiles extends AbstractMetricCount
+class TotalOfFiles extends AbstractMetricBase
 {
     public function getName()
     {
@@ -40,7 +40,7 @@ class TotalOfFiles extends AbstractMetricCount
         return 'The total number of files';
     }
 
-    public function calculate()
+    public function getMetric()
     {
         // Put the logic to calculate the total here.
         // ..
@@ -57,9 +57,9 @@ Create total of PHP files metric.
 
 namespace EdisonLabs\Metrics\Counts;
 
-use EdisonLabs\Metrics\Metric\AbstractMetricCount;
+use EdisonLabs\Metrics\Metric\AbstractMetricBase;
 
-class TotalOfPhpFiles extends AbstractMetricCount
+class TotalOfPhpFiles extends AbstractMetricBase
 {
     public function getName()
     {
@@ -71,7 +71,7 @@ class TotalOfPhpFiles extends AbstractMetricCount
         return 'The total number of PHP files';
     }
 
-    public function calculate()
+    public function getMetric()
     {
         // Put the logic to calculate the total of PHP files here.
         // ..
