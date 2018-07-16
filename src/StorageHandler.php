@@ -15,13 +15,24 @@ class StorageHandler
     /**
      * @var array
      */
+    protected $config;
+
+    /**
+     * @var array
+     */
     protected $storages = array();
 
     /**
      * StorageHandler constructor.
+     *
+     * @param array $config
+     *   The custom config array.
+     *
+     * @throws \Exception
      */
-    public function __construct()
+    public function __construct(array $config = array())
     {
+        $this->config = $config;
         $this->setStorages();
     }
 
@@ -59,6 +70,8 @@ class StorageHandler
             if (!$storage instanceof MetricStorageInterface) {
                 continue;
             }
+
+            $storage->setConfig($this->config);
 
             $this->setStorage($storage);
         }

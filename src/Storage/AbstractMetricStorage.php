@@ -9,9 +9,32 @@ abstract class AbstractMetricStorage implements MetricStorageInterface
 {
 
     /**
+     * The metrics config.
+     *
+     * @var array
+     */
+    protected $config = array();
+
+    /**
      * @var array
      */
     protected $metrics = array();
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setConfig(array $config)
+    {
+        $this->config = $config;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getConfig()
+    {
+        return $this->config;
+    }
 
     /**
      * Set the metrics to be saved.

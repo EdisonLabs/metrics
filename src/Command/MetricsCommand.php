@@ -21,6 +21,11 @@ class MetricsCommand extends Command
     /**
      * @var array
      */
+    protected $config = array();
+
+    /**
+     * @var array
+     */
     protected $metrics = array();
 
     /**
@@ -38,7 +43,6 @@ class MetricsCommand extends Command
      */
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
-        $this->storageHandler = new StorageHandler();
         $this->io = new SymfonyStyle($input, $output);
 
         if ($input->getOption('list-storages')) {
@@ -55,9 +59,14 @@ class MetricsCommand extends Command
         $config = $input->getOption('config');
         $config = $this->getConfigArray($config);
 
-        $collector = new Collector($groups, $config);
+        $this->config = $config;
 
+        // Gets metrics.
+        $collector = new Collector($groups, $this->config);
         $this->metrics = $collector->getMetrics();
+
+        // Sets storage handler.
+        $this->storageHandler = new StorageHandler($this->config);
     }
 
     /**
