@@ -10,7 +10,7 @@ use EdisonLabs\Metrics\Metric\AbstractMetricBase;
 class Collector
 {
 
-    const METRICS_NAMESPACE = 'EdisonLabs\Metrics';
+    const METRICS_NAMESPACE = 'EdisonLabs\Metric';
 
     /**
      * @var array
@@ -77,6 +77,7 @@ class Collector
         $containerBuilder = $containerBuilder->getContainerBuilder();
 
         $services = $containerBuilder->getServiceIds();
+
         foreach ($services as $serviceName) {
             if (strpos($serviceName, self::METRICS_NAMESPACE) === false) {
                 continue;

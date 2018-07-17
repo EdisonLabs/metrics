@@ -1,11 +1,11 @@
 <?php
 
-namespace EdisonLabs\Metrics\Storage;
+namespace EdisonLabs\Metrics\Datastore;
 
 /**
- * Class MetricStorage
+ * Class AbstractMetricDatastore
  */
-abstract class AbstractMetricStorage implements MetricStorageInterface
+abstract class AbstractMetricDatastore implements MetricDatastoreInterface
 {
 
     /**
