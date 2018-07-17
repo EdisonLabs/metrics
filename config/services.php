@@ -25,8 +25,8 @@ if ($finder->count() !== 0) {
         // $this is a reference to the current loader
         $this->registerClasses(
             $definition,
-            'EdisonLabs\\Metrics\\',
-            $folder->getRealPath().'/Metrics'
+            'EdisonLabs\\Metric\\',
+            $folder->getRealPath().'/Metric'
         );
     }
 }

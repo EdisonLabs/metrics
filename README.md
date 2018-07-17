@@ -22,9 +22,9 @@ In the following example, we will create three metrics:
 
 Create number of files metric:
 ```php
-// src/EdisonLabs/Metrics/Counts/NumberOfFiles.php
+// src/EdisonLabs/Metric/NumberOfFiles.php
 
-namespace EdisonLabs\Metrics\Counts;
+namespace EdisonLabs\Metric;
 
 use EdisonLabs\Metrics\Metric\AbstractMetricBase;
 
@@ -53,9 +53,9 @@ class NumberOfFiles extends AbstractMetricBase
 
 Create number of PHP files metric:
 ```php
-// src/EdisonLabs/Metrics/Counts/NumberOfPhpFiles.php
+// src/EdisonLabs/Metric/NumberOfPhpFiles.php
 
-namespace EdisonLabs\Metrics\Counts;
+namespace EdisonLabs\Metric;
 
 use EdisonLabs\Metrics\Metric\AbstractMetricBase;
 
@@ -84,12 +84,10 @@ class NumberOfPhpFiles extends AbstractMetricBase
 
 Create the percentage of PHP files metric:
 ```php
-// src/EdisonLabs/Metrics/Percentages/PercentageOfPhpFiles.php
+// src/EdisonLabs/Metric/PercentageOfPhpFiles.php
 
-namespace EdisonLabs\Metrics\Percentages;
+namespace EdisonLabs\Metric;
 
-use EdisonLabs\Metrics\Counts\NumberOfFiles;
-use EdisonLabs\Metrics\Counts\NumberOfPhpFiles;
 use EdisonLabs\Metrics\Metric\AbstractMetricPercentage;
 
 class PercentageOfPhpFiles extends AbstractMetricPercentage
@@ -111,13 +109,11 @@ class PercentageOfPhpFiles extends AbstractMetricPercentage
 }
 ```
 
-*You must use the namespaces `EdisonLabs\Metrics\Percentages` or `EdisonLabs\Metrics\Counts` when creating the classes.*
-
 Configure the autoload on the `composer.json` file:
 ```json
 "autoload": {
     "psr-4": {
-        "EdisonLabs\\Metrics\\": "src/EdisonLabs/Metrics"
+        "EdisonLabs\\Metric\\": "src/EdisonLabs/Metric"
     }
 }
 ```
@@ -149,16 +145,16 @@ The command is located at `vendor/bin/metrics`. Include the `vendor/bin` directo
 Type `metrics --help` to see all the available options.
 
 ## Saving metrics
-Create storage classes to save your metrics:
+Create datastore classes to save your metrics:
 
 ```php
-// src/EdisonLabs/Metrics/Storages/SqLite.php
+// src/EdisonLabs/Metric/Datastore/SqLite.php
 
-namespace EdisonLabs\Metrics\Storages;
+namespace EdisonLabs\Metric\Datastore;
 
-use EdisonLabs\Metrics\Metric\Storage\AbstractMetricStorage;
+use EdisonLabs\Metrics\Metric\Datastore\AbstractMetricDatastore;
 
-class SqLite extends AbstractMetricStorage
+class SqLite extends AbstractMetricDatastore
 {
     public function getName()
     {
@@ -182,18 +178,18 @@ class SqLite extends AbstractMetricStorage
 
 #### Programmatically
 ```php
-// storage.php
+// datastore.php
 
 use EdisonLabs\Metrics\Collector;
-use EdisonLabs\Metrics\StorageHandler;
+use EdisonLabs\Metrics\DatastoreHandler;
 
 $collector = new Collector();
 $metrics = $collector->getMetrics();
 
-$storageHandler = new StorageHandler();
-$storage = $storageHandler->getStorageByName('SQLite');
-$storage->setMetrics($metrics);
-$storage->save();
+$datastoreHandler = new DatastoreHandler();
+$datastore = $datastoreHandler->getDatastoreByName('SQLite');
+$datastore->setMetrics($metrics);
+$datastore->save();
 ```
 
 #### Command
@@ -204,5 +200,5 @@ metrics --save=SQLite
 
 The `--save` option accepts multiple values.
 ```
-metrics --save=SQLite,MySql,MyCustomStorage
+metrics --save=SQLite,MySql,MyCustomDatastore
 ```

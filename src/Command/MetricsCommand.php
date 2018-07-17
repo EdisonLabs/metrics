@@ -3,7 +3,7 @@
 namespace EdisonLabs\Metrics\Command;
 
 use EdisonLabs\Metrics\Collector;
-use EdisonLabs\Metrics\StorageHandler;
+use EdisonLabs\Metrics\DatastoreHandler;
 use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
@@ -29,9 +29,9 @@ class MetricsCommand extends Command
     protected $metrics = array();
 
     /**
-     * @var \EdisonLabs\Metrics\StorageHandler
+     * @var \EdisonLabs\Metrics\DatastoreHandler
      */
-    protected $storageHandler;
+    protected $datastoreHandler;
 
     /**
      * @var \Symfony\Component\Console\Style\SymfonyStyle
@@ -45,7 +45,16 @@ class MetricsCommand extends Command
     {
         $this->io = new SymfonyStyle($input, $output);
 
-        if ($input->getOption('list-storages')) {
+        // Gets config.
+        $config = $input->getOption('config');
+        $config = $this->getConfigArray($config);
+
+        $this->config = $config;
+
+        // Sets datastore handler.
+        $this->datastoreHandler = new DatastoreHandler($this->config);
+
+        if ($input->getOption('list-datastores')) {
             return;
         }
 
@@ -55,18 +64,9 @@ class MetricsCommand extends Command
             $groups =  explode(',', $groups);
         }
 
-        // Gets config.
-        $config = $input->getOption('config');
-        $config = $this->getConfigArray($config);
-
-        $this->config = $config;
-
         // Gets metrics.
         $collector = new Collector($groups, $this->config);
         $this->metrics = $collector->getMetrics();
-
-        // Sets storage handler.
-        $this->storageHandler = new StorageHandler($this->config);
     }
 
     /**
@@ -79,8 +79,8 @@ class MetricsCommand extends Command
             ->setDescription('Edison Labs metrics collector')
             ->setHelp('This command allows you to list and save the collected metrics.')
             ->addOption('format', null, InputOption::VALUE_REQUIRED, 'The output format: table, json', 'table')
-            ->addOption('list-storages', null, InputOption::VALUE_NONE, 'List the available storages to save the metrics')
-            ->addOption('save', null, InputOption::VALUE_REQUIRED, 'Save the metrics to target storages')
+            ->addOption('list-datastores', null, InputOption::VALUE_NONE, 'List the available datastores to save the metrics')
+            ->addOption('save', null, InputOption::VALUE_REQUIRED, 'Save the metrics to target datastores')
             ->addOption('no-messages', null, InputOption::VALUE_NONE, 'Do not output messages')
             ->addOption('groups', null, InputOption::VALUE_REQUIRED, 'Collect metrics from specific groups only', array())
             ->addOption('config', null, InputOption::VALUE_REQUIRED, 'Pass custom config to the metrics, which can be a file or a string containing JSON format');
@@ -164,21 +164,21 @@ class MetricsCommand extends Command
     }
 
     /**
-     * Outputs the available storages on table format.
+     * Outputs the available datastores on table format.
      *
      * @param OutputInterface $output
      *   Console output object.
      */
-    protected function outputStoragesTable(OutputInterface $output)
+    protected function outputDatastoresTable(OutputInterface $output)
     {
         $header = array('Name', 'Description');
 
         $rows = array();
-        foreach ($this->storageHandler->getStorages() as $storage) {
-            /** @var \EdisonLabs\Metrics\Storage\MetricStorageInterface $storage */
+        foreach ($this->datastoreHandler->getDatastores() as $datastore) {
+            /** @var \EdisonLabs\Metrics\Datastore\MetricDatastoreInterface $datastore */
             $rows[] = array(
-                $storage->getName(),
-                $storage->getDescription(),
+                $datastore->getName(),
+                $datastore->getDescription(),
             );
         }
 
@@ -218,9 +218,9 @@ class MetricsCommand extends Command
     {
         $noMessages = $input->getOption('no-messages');
 
-        // List storages.
-        if ($input->getOption('list-storages')) {
-            $this->outputStoragesTable($output);
+        // List datastores.
+        if ($input->getOption('list-datastores')) {
+            $this->outputDatastoresTable($output);
 
             return;
         }
@@ -236,27 +236,27 @@ class MetricsCommand extends Command
         // Save metrics.
         $saveOption = $input->getOption('save');
         if ($saveOption) {
-            $storagesToSave = explode(',', $saveOption);
+            $datastoresToSave = explode(',', $saveOption);
 
-            foreach ($storagesToSave as $storageName) {
-                /** @var \EdisonLabs\Metrics\Storage\AbstractMetricStorage $storage */
-                $storage = $this->storageHandler->getStorageByName($storageName);
+            foreach ($datastoresToSave as $datastoreName) {
+                /** @var \EdisonLabs\Metrics\Datastore\AbstractMetricDatastore $datastore */
+                $datastore = $this->datastoreHandler->getDatastoreByName($datastoreName);
 
-                if (!$storage) {
-                    $this->io->warning("Unable to find storage $storageName");
+                if (!$datastore) {
+                    $this->io->warning("Unable to find datastore $datastoreName");
                     continue;
                 }
 
-                $storage->setMetrics($this->metrics);
-                if ($storage->save()) {
+                $datastore->setMetrics($this->metrics);
+                if ($datastore->save()) {
                     if (!$noMessages) {
-                        $this->io->success("Metrics have been saved to $storageName");
+                        $this->io->success("Metrics have been saved to $datastoreName");
                     }
                     continue;
                 }
 
                 if (!$noMessages) {
-                    $this->io->warning("Unable to save metrics to storage $storageName");
+                    $this->io->warning("Unable to save metrics to datastore $datastoreName");
                 }
             }
         }
