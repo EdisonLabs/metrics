@@ -1,4 +1,4 @@
-# Changelog: Metrics
+# Changelog: Metrics Collector
 
 ## Releases
 
