@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/EdisonLabs/metrics.svg?branch=1.x)](https://travis-ci.com/EdisonLabs/metrics)
+[![Build Status](https://travis-ci.com/EdisonLabs/metrics.svg?branch=1.x)](https://travis-ci.com/EdisonLabs/metrics) [![Coverage Status](https://coveralls.io/repos/github/EdisonLabs/metrics/badge.svg?branch=1.x)](https://coveralls.io/github/EdisonLabs/metrics?branch=1.x)
 
 # Metrics Collector
 
