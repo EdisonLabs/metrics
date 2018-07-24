@@ -2,6 +2,8 @@
 
 namespace EdisonLabs\Metrics\Unit;
 
+use EdisonLabs\Metrics\Collector;
+use EdisonLabs\Metrics\ContainerBuilder;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -13,10 +15,22 @@ class MetricsTest extends TestCase
 {
 
     /**
-     * Basic test to get success result.
+     * Covers \EdisonLabs\Metrics\ContainerBuilder
      */
-    public function testMetrics()
+    public function testContainerBuilder()
     {
-        $this->assertTrue(true);
+        $containerBuilder = new ContainerBuilder();
+        $containerBuilder = $containerBuilder->getContainerBuilder();
+        $this->assertInstanceOf('SymfonyContainerBuilder', $containerBuilder);
+    }
+
+    /**
+     * Covers \EdisonLabs\Metrics\Collector
+     */
+    public function testCollector()
+    {
+        $collector = new Collector();
+        $metrics = $collector->getMetrics();
+        $this->assertNotNull($metrics);
     }
 }
