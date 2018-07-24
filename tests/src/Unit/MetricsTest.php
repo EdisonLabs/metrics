@@ -33,4 +33,32 @@ class MetricsTest extends TestCase
         $metrics = $collector->getMetrics();
         $this->assertNotNull($metrics);
     }
+
+    /**
+     * Covers \EdisonLabs\Metrics\Metric\AbstractMetricPercentage
+     */
+    public function testAbstractMetricPercentage()
+    {
+        $count = $this->getMockBuilder('EdisonLabs\Metrics\Metric\AbstractMetricBase')
+            ->setMethods(['getMetric'])
+            ->getMockForAbstractClass();
+        $count->expects($this->once())
+            ->method('getMetric')
+            ->willReturn(3);
+
+        $total = $this->getMockBuilder('EdisonLabs\Metrics\Metric\AbstractMetricBase')
+            ->setMethods(['getMetric'])
+            ->getMockForAbstractClass();
+        $total->expects($this->once())
+            ->method('getMetric')
+            ->willReturn(10);
+
+        $metricPercentage = $this->getMockBuilder('EdisonLabs\Metrics\Metric\AbstractMetricPercentage')
+            ->setConstructorArgs([$count, $total]);
+        $metricPercentage = $metricPercentage->getMockForAbstractClass();
+
+        $metric = $metricPercentage->getMetric();
+        $this->assertNotNull($metric);
+        $this->assertEquals(30, $metric);
+    }
 }
