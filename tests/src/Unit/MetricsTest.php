@@ -61,4 +61,24 @@ class MetricsTest extends TestCase
         $this->assertNotNull($metric);
         $this->assertEquals(30, $metric);
     }
+
+    /**
+     * Covers \EdisonLabs\Metrics\DatastoreHandler
+     */
+    public function testDatastoreHandler()
+    {
+        $dataStore = $this->getMockBuilder('EdisonLabs\Metrics\Datastore\MetricDatastoreInterface')
+            ->setMethods(['getName', 'getDescription', 'setConfig', 'getConfig', 'save'])
+            ->getMock();
+        $dataStore->expects($this->once())
+            ->method('getName')
+            ->willReturn('test');
+
+        $datastoreHandler = $this->getMockBuilder('EdisonLabs\Metrics\DatastoreHandler')
+            ->setConstructorArgs([[], [$dataStore]])
+            ->getMock();
+
+        $this->assertNotNull($datastoreHandler->getDatastores());
+        $this->assertEquals($dataStore, $datastoreHandler->getDatastoreByName('test'));
+    }
 }

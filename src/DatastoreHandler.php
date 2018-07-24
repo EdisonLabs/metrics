@@ -27,13 +27,15 @@ class DatastoreHandler
      *
      * @param array $config
      *   The custom config array.
+     * @param \EdisonLabs\Metrics\Datastore\MetricDatastoreInterface[] $datastores
+     *   (optional) The array of MetricDatastore to set.
      *
      * @throws \Exception
      */
-    public function __construct(array $config = array())
+    public function __construct(array $config = [], array $datastores = [])
     {
         $this->config = $config;
-        $this->setDatastores();
+        $this->setDatastores($datastores);
     }
 
     /**
@@ -50,10 +52,20 @@ class DatastoreHandler
     /**
      * Sets datastores.
      *
+     * @param \EdisonLabs\Metrics\Datastore\MetricDatastoreInterface[] $datastores
+     *   (optional) The array of MetricDatastore to set.
+     *
      * @throws \Exception
      */
-    public function setDatastores()
+    public function setDatastores(array $datastores = [])
     {
+        if (!empty($datastores)) {
+            foreach ($datastores as $datastore) {
+                $this->setDatastore($datastore);
+                return;
+            }
+        }
+
         $containerBuilder = new ContainerBuilder();
         $containerBuilder = $containerBuilder->getContainerBuilder();
 
