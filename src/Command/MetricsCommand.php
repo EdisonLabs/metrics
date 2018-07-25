@@ -151,14 +151,14 @@ class MetricsCommand extends Command
      *   An array containing the table rows.
      * @param OutputInterface $output
      *   Console output object.
-     * @param int             $sort_column
+     * @param int             $sortColumn
      *   The column to sort the output on.
      */
-    protected function outputTable(array $header, array $rows, OutputInterface $output, $sort_column = -1)
+    protected function outputTable(array $header, array $rows, OutputInterface $output, $sortColumn = -1)
     {
-        if ($sort_column !== -1) {
-            uasort($rows, function($a, $b) use ($sort_column) {
-                return $a[$sort_column] > $b[$sort_column];
+        if (-1 != $sortColumn) {
+            uasort($rows, function ($a, $b) use ($sortColumn) {
+                return $a[$sortColumn] > $b[$sortColumn];
             });
         }
 
