@@ -151,9 +151,17 @@ class MetricsCommand extends Command
      *   An array containing the table rows.
      * @param OutputInterface $output
      *   Console output object.
+     * @param int             $sortColumn
+     *   The column to sort the output on.
      */
-    protected function outputTable(array $header, array $rows, OutputInterface $output)
+    protected function outputTable(array $header, array $rows, OutputInterface $output, $sortColumn = -1)
     {
+        if (-1 != $sortColumn) {
+            uasort($rows, function ($a, $b) use ($sortColumn) {
+                return $a[$sortColumn] > $b[$sortColumn];
+            });
+        }
+
         $table = new Table($output);
 
         $table
@@ -182,7 +190,7 @@ class MetricsCommand extends Command
             );
         }
 
-        $this->outputTable($header, $rows, $output);
+        $this->outputTable($header, $rows, $output, 0);
     }
 
     /**
@@ -208,7 +216,7 @@ class MetricsCommand extends Command
             );
         }
 
-        $this->outputTable($header, $rows, $output);
+        $this->outputTable($header, $rows, $output, 0);
     }
 
     /**
