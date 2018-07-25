@@ -4,6 +4,7 @@ namespace EdisonLabs\Metrics\Unit;
 
 use EdisonLabs\Metrics\Collector;
 use EdisonLabs\Metrics\ContainerBuilder;
+use PHPUnit\Framework\Constraint\IsInstanceOf;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -15,13 +16,35 @@ class MetricsTest extends TestCase
 {
 
     /**
+     * {@inheritdoc}
+     */
+    protected function setUp()
+    {
+        if (!defined('EDISONLABS_COMPOSER_INSTALL')) {
+            $root = __DIR__.'/../../';
+            $sources = array(
+                $root.'/../../autoload.php',
+                $root.'/../vendor/autoload.php',
+                $root.'/vendor/autoload.php',
+            );
+
+            foreach ($sources as $file) {
+                if (file_exists($file)) {
+                    define('EDISONLABS_COMPOSER_INSTALL', $file);
+                    break;
+                }
+            }
+        }
+    }
+
+    /**
      * Covers \EdisonLabs\Metrics\ContainerBuilder
      */
     public function testContainerBuilder()
     {
         $containerBuilder = new ContainerBuilder();
-        $containerBuilder = $containerBuilder->getContainerBuilder();
-        $this->assertInstanceOf('SymfonyContainerBuilder', $containerBuilder);
+        $symfonyContainerBuilder = $containerBuilder->getContainerBuilder();
+        static::assertThat($symfonyContainerBuilder, new IsInstanceOf('\Symfony\Component\DependencyInjection\ContainerBuilder'));
     }
 
     /**
@@ -75,8 +98,11 @@ class MetricsTest extends TestCase
             ->willReturn('test');
 
         $datastoreHandler = $this->getMockBuilder('EdisonLabs\Metrics\DatastoreHandler')
-            ->setConstructorArgs([[], [$dataStore]])
+            ->setMethods(['getDatastores'])
             ->getMock();
+        $datastoreHandler->expects($this->any())
+            ->method('getDatastores')
+            ->willReturn([$dataStore]);
 
         $this->assertNotNull($datastoreHandler->getDatastores());
         $this->assertEquals($dataStore, $datastoreHandler->getDatastoreByName('test'));
