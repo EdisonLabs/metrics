@@ -5,6 +5,7 @@ namespace EdisonLabs\Metrics\Unit;
 use EdisonLabs\Metrics\Collector;
 use EdisonLabs\Metrics\ContainerBuilder;
 use EdisonLabs\Metrics\Metric\AbstractMetricBase;
+use EdisonLabs\Metrics\Metric\MetricInterface;
 use PHPUnit\Framework\Constraint\IsInstanceOf;
 use PHPUnit\Framework\TestCase;
 
@@ -64,10 +65,15 @@ class MetricsTest extends TestCase
 
     /**
      * Covers \EdisonLabs\Metrics\Metric\AbstractMetricBase
+     *
+     * @return null
      */
     public function testAbstractMetricBase()
     {
-        $abstractMetricBaseClass = new class extends AbstractMetricBase
+        /**
+         * Anonymous class for testing AbstractMetricBase.
+         */
+        $abstractMetricBaseClass = new class() extends AbstractMetricBase
         {
             /**
              * {@inheritdoc}
@@ -157,6 +163,87 @@ class MetricsTest extends TestCase
         $metric = $metricPercentage->getMetric();
         $this->assertNotNull($metric);
         $this->assertEquals(30, $metric);
+    }
+
+    /**
+     * Covers \EdisonLabs\Metrics\Metric\MetricInterface
+     *
+     * @return null
+     */
+    public function testMetricInterface()
+    {
+        /**
+         * Anonymous class for testing MetricInterface.
+         */
+        $metricInterfaceClass = new class() implements MetricInterface
+        {
+            /**
+             * The metrics config.
+             *
+             * @var array
+             */
+            protected $config;
+
+            /**
+             * {@inheritdoc}
+             */
+            public function setConfig(array $config)
+            {
+                $this->config = $config;
+            }
+
+            /**
+             * {@inheritdoc}
+             */
+            public function getConfig()
+            {
+                return $this->config;
+            }
+
+            /**
+             * {@inheritdoc}
+             */
+            public function getGroups()
+            {
+                return [];
+            }
+
+            /**
+             * {@inheritdoc}
+             */
+            public function getName()
+            {
+                return 'Test metric';
+            }
+
+            /**
+             * {@inheritdoc}
+             */
+            public function getDescription()
+            {
+                return 'Test metric description';
+            }
+
+            /**
+             * {@inheritdoc}
+             */
+            public function getMetric()
+            {
+                return 666;
+            }
+
+        };
+        $configuration = ['test' => '123'];
+        $metricInterfaceClass->setConfig($configuration);
+        $config = $metricInterfaceClass->getConfig();
+        $this->assertArrayHasKey('test', $config);
+        $this->assertEquals($config['test'], $configuration['test']);
+        $this->assertEquals('Test metric', $metricInterfaceClass->getName());
+        $this->assertEquals('Test metric description', $metricInterfaceClass->getDescription());
+        $this->assertEquals(666, $metricInterfaceClass->getMetric());
+        $groups = $metricInterfaceClass->getGroups();
+        $this->assertTrue(is_array($groups));
+        $this->assertEmpty($groups);
     }
 
     /**
