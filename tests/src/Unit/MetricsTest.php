@@ -53,8 +53,12 @@ class MetricsTest extends TestCase
     public function testCollector()
     {
         $collector = new Collector();
+        $metric = $this->getMockBuilder('EdisonLabs\Metrics\Metric\AbstractMetricBase')
+            ->getMockForAbstractClass();
+        $collector->setMetric($metric);
         $metrics = $collector->getMetrics();
-        $this->assertNotNull($metrics);
+        $this->assertNotEmpty($metrics);
+        $this->assertTrue(is_array($metrics));
     }
 
     /**
