@@ -146,4 +146,42 @@ class MetricsTest extends TestCase
         $this->assertNotNull($datastoreHandler->getDatastores());
         $this->assertEquals($dataStore, $datastoreHandler->getDatastoreByName('test'));
     }
+
+    /**
+     * Covers \EdisonLabs\Metrics\Datastore\AbstractMetricDatastore
+     *
+     * @return null
+     */
+    public function testAbstractMetricDatastore()
+    {
+        $abstractMetricDatastoreMock = $this->getMockBuilder('EdisonLabs\Metrics\Datastore\AbstractMetricDatastore')
+            ->setMethods(['getDescription', 'getName', 'save'])
+            ->getMockForAbstractClass();
+        $abstractMetricDatastoreMock->expects($this->once())
+            ->method('getDescription')
+            ->willReturn('Test metric datastore description');
+        $abstractMetricDatastoreMock->expects($this->once())
+            ->method('getName')
+            ->willReturn('Test metric datastore');
+
+        $configuration = ['test' => '123'];
+        $abstractMetricDatastoreMock->setConfig($configuration);
+        $config = $abstractMetricDatastoreMock->getConfig();
+        $this->assertArrayHasKey('test', $config);
+        $this->assertEquals($config['test'], $configuration['test']);
+        $this->assertEquals('Test metric datastore', $abstractMetricDatastoreMock->getName());
+        $this->assertEquals('Test metric datastore description', $abstractMetricDatastoreMock->getDescription());
+
+        $metric = $this->getMockBuilder('EdisonLabs\Metrics\Metric\AbstractMetricBase')
+            ->setMethods(['getMetric'])
+            ->getMockForAbstractClass();
+        $metric->method('getMetric')
+            ->willReturn(10);
+        $metrics = [$metric];
+        $abstractMetricDatastoreMock->setMetrics($metrics);
+        $datastoreMetrics = $abstractMetricDatastoreMock->getMetrics();
+        $this->assertNotEmpty($datastoreMetrics);
+        $this->assertCount(1, $datastoreMetrics);
+        $this->assertEquals(10, $datastoreMetrics[0]->getMetric());
+    }
 }
