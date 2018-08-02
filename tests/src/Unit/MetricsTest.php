@@ -4,6 +4,7 @@ namespace EdisonLabs\Metrics\Unit;
 
 use EdisonLabs\Metrics\Collector;
 use EdisonLabs\Metrics\ContainerBuilder;
+use EdisonLabs\Metrics\Metric\AbstractMetricBase;
 use PHPUnit\Framework\Constraint\IsInstanceOf;
 use PHPUnit\Framework\TestCase;
 
@@ -59,6 +60,75 @@ class MetricsTest extends TestCase
         $metrics = $collector->getMetrics();
         $this->assertNotEmpty($metrics);
         $this->assertTrue(is_array($metrics));
+    }
+
+    /**
+     * Covers \EdisonLabs\Metrics\Metric\AbstractMetricBase
+     */
+    public function testAbstractMetricBase()
+    {
+        $abstractMetricBaseClass = new class extends AbstractMetricBase
+        {
+            /**
+             * {@inheritdoc}
+             */
+            public function setConfig(array $config)
+            {
+                $this->config = $config;
+            }
+
+            /**
+             * {@inheritdoc}
+             */
+            public function getConfig()
+            {
+                return parent::getConfig();
+            }
+
+            /**
+             * {@inheritdoc}
+             */
+            public function getGroups()
+            {
+                return parent::getGroups();
+            }
+
+            /**
+             * {@inheritdoc}
+             */
+            public function getName()
+            {
+                return 'Test metric';
+            }
+
+            /**
+             * {@inheritdoc}
+             */
+            public function getDescription()
+            {
+                return 'Test metric description';
+            }
+
+            /**
+             * {@inheritdoc}
+             */
+            public function getMetric()
+            {
+                return 666;
+            }
+
+        };
+        $configuration = ['test' => '123'];
+        $abstractMetricBaseClass->setConfig($configuration);
+        $config = $abstractMetricBaseClass->getConfig();
+        $this->assertArrayHasKey('test', $config);
+        $this->assertEquals($config['test'], $configuration['test']);
+        $this->assertEquals('Test metric', $abstractMetricBaseClass->getName());
+        $this->assertEquals('Test metric description', $abstractMetricBaseClass->getDescription());
+        $this->assertEquals(666, $abstractMetricBaseClass->getMetric());
+        $groups = $abstractMetricBaseClass->getGroups();
+        $this->assertTrue(is_array($groups));
+        $this->assertEmpty($groups);
     }
 
     /**
