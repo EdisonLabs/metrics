@@ -4,8 +4,6 @@ namespace EdisonLabs\Metrics\Unit;
 
 use EdisonLabs\Metrics\Collector;
 use EdisonLabs\Metrics\ContainerBuilder;
-use EdisonLabs\Metrics\Metric\AbstractMetricBase;
-use EdisonLabs\Metrics\Metric\MetricInterface;
 use PHPUnit\Framework\Constraint\IsInstanceOf;
 use PHPUnit\Framework\TestCase;
 
@@ -149,8 +147,6 @@ class MetricsTest extends TestCase
 
     /**
      * Covers \EdisonLabs\Metrics\Datastore\AbstractMetricDatastore
-     *
-     * @return null
      */
     public function testAbstractMetricDatastore()
     {
