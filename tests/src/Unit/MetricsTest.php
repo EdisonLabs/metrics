@@ -44,7 +44,7 @@ class MetricsTest extends TestCase
     {
         $containerBuilder = new ContainerBuilder();
         $symfonyContainerBuilder = $containerBuilder->getContainerBuilder();
-        static::assertThat($symfonyContainerBuilder, new IsInstanceOf('\Symfony\Component\DependencyInjection\ContainerBuilder'));
+        $this->assertInstanceOf('Symfony\Component\DependencyInjection\ContainerBuilder', $symfonyContainerBuilder);
     }
 
     /**
