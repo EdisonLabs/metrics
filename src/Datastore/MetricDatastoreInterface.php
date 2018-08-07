@@ -8,6 +8,16 @@ namespace EdisonLabs\Metrics\Datastore;
 interface MetricDatastoreInterface
 {
     /**
+     * MetricDatastoreInterface constructor.
+     *
+     * @param string $date
+     *   The date of the metrics (timestamp).
+     * @param array $config
+     *   An array containing the config.
+     */
+    public function __construct($date, array $config = array());
+
+    /**
      * Returns the name of the metric datastore.
      *
      * @return string
@@ -38,6 +48,22 @@ interface MetricDatastoreInterface
      *   An array containing the datastore config.
      */
     public function getConfig();
+
+    /**
+     * Sets the date of the metrics.
+     *
+     * @param string $date
+     *   The date of the metrics.
+     */
+    public function setDate($date);
+
+    /**
+     * Returns the date of the metrics.
+     *
+     * @return string
+     *   Returns a timestamp.
+     */
+    public function getDate();
 
     /**
      * Saves the metrics to the datastore.

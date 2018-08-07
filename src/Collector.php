@@ -13,9 +13,14 @@ class Collector
     const METRICS_NAMESPACE = 'EdisonLabs\Metric';
 
     /**
+     * @var string
+     */
+    protected $date;
+
+    /**
      * @var array
      */
-    protected $metrics = array();
+    protected $config;
 
     /**
      * @var array
@@ -25,22 +30,25 @@ class Collector
     /**
      * @var array
      */
-    protected $config;
+    protected $metrics = array();
 
     /**
      * Collector constructor.
      *
-     * @param array $groups
-     *   A list containing the groups to filter for.
-     * @param array $config
+     * @param string $date
+     *   A date timestamp to collect for.
+     * @param array  $config
      *   The custom config array.
+     * @param array  $groups
+     *   A list containing the groups to filter for.
      *
      * @throws \Exception
      */
-    public function __construct(array $groups = array(), array $config = array())
+    public function __construct($date, array $config = array(), array $groups = array())
     {
         $this->groups = $groups;
         $this->config = $config;
+        $this->date = $date;
         $this->setMetrics();
     }
 
@@ -73,7 +81,7 @@ class Collector
      */
     protected function setMetrics()
     {
-        $containerBuilder = new ContainerBuilder();
+        $containerBuilder = new ContainerBuilder($this->date, $this->config);
         $containerBuilder = $containerBuilder->getContainerBuilder();
 
         $services = $containerBuilder->getServiceIds();
@@ -83,6 +91,7 @@ class Collector
                 continue;
             }
 
+            /** @var \EdisonLabs\Metrics\Metric\MetricInterface $metric */
             $metric = $containerBuilder->get($serviceName);
 
             // Sanity check by class type.

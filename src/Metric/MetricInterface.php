@@ -8,6 +8,16 @@ namespace EdisonLabs\Metrics\Metric;
 interface MetricInterface
 {
     /**
+     * MetricInterface constructor.
+     *
+     * @param string $date
+     *   The metric date (timestamp).
+     * @param array $config
+     *   An array containing the metric config.
+     */
+    public function __construct($date, array $config = array());
+
+    /**
      * Returns the name of the metric.
      *
      * @return string
@@ -46,6 +56,22 @@ interface MetricInterface
      *   A list of groups.
      */
     public function getGroups();
+
+    /**
+     * Sets the date of the metric.
+     *
+     * @param string $date
+     *   The date of the metric.
+     */
+    public function setDate($date);
+
+    /**
+     * Returns the date of the metric.
+     *
+     * @return string
+     *   Returns a timestamp.
+     */
+    public function getDate();
 
     /**
      * Returns the metric value.

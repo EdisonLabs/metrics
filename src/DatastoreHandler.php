@@ -13,6 +13,11 @@ class DatastoreHandler
     const DATASTORE_NAMESPACE = 'EdisonLabs\Metric\Datastore';
 
     /**
+     * @var string
+     */
+    protected $date;
+
+    /**
      * @var array
      */
     protected $config;
@@ -25,14 +30,17 @@ class DatastoreHandler
     /**
      * DatastoreHandler constructor.
      *
+     * @param string $date
+     *   The date (timestamp) of the metrics.
      * @param array $config
      *   The custom config array.
      *
      * @throws \Exception
      */
-    public function __construct(array $config = array())
+    public function __construct($date, array $config = array())
     {
         $this->config = $config;
+        $this->date = $date;
         $this->setDatastores();
     }
 
@@ -54,7 +62,7 @@ class DatastoreHandler
      */
     public function setDatastores()
     {
-        $containerBuilder = new ContainerBuilder();
+        $containerBuilder = new ContainerBuilder($this->date, $this->config);
         $containerBuilder = $containerBuilder->getContainerBuilder();
 
         $services = $containerBuilder->getServiceIds();

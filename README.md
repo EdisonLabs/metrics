@@ -7,51 +7,16 @@ The Metrics Collector is a simple library that provides base classes to easily e
 
 ## Usage
 
-This library does not provide any metrics by default. To create your own metrics, [create a Composer package](https://getcomposer.org/doc/01-basic-usage.md) and then add a dependency to this package:
+This library does not provide any metrics by default. To create new metrics, [create a Composer package](https://getcomposer.org/doc/01-basic-usage.md) and then add a dependency to this package:
 
 ```
 composer require edisonlabs/metrics
 ```
 
-Now create your metrics classes extending `edisonlabs/metrics` classes.
+Now create the metrics classes extending `edisonlabs/metrics` classes.
 
-In the following example, we will create three metrics:
-- Total number of files that a location has
-- Total number of PHP files
-- Percentage of PHP files
+Example: Number of PHP files.
 
-Create number of files metric:
-```php
-// src/EdisonLabs/Metric/NumberOfFiles.php
-
-namespace EdisonLabs\Metric;
-
-use EdisonLabs\Metrics\Metric\AbstractMetricBase;
-
-class NumberOfFiles extends AbstractMetricBase
-{
-    public function getName()
-    {
-        return 'Number of files';
-    }
-
-    public function getDescription()
-    {
-        return 'The total number of files';
-    }
-
-    public function getMetric()
-    {
-        // Put the logic to calculate the total here.
-        // ..
-
-        // Random example.
-        return rand(10, 100);
-    }
-}
-```
-
-Create number of PHP files metric:
 ```php
 // src/EdisonLabs/Metric/NumberOfPhpFiles.php
 
@@ -82,34 +47,7 @@ class NumberOfPhpFiles extends AbstractMetricBase
 }
 ```
 
-Create the percentage of PHP files metric:
-```php
-// src/EdisonLabs/Metric/PercentageOfPhpFiles.php
-
-namespace EdisonLabs\Metric;
-
-use EdisonLabs\Metrics\Metric\AbstractMetricPercentage;
-
-class PercentageOfPhpFiles extends AbstractMetricPercentage
-{
-    public function __construct(NumberOfFiles $total, NumberOfPhpFiles $count)
-    {
-        parent::__construct($total, $count);
-    }
-
-    public function getName()
-    {
-        return 'PHP files (%)';
-    }
-
-    public function getDescription()
-    {
-        return 'Percentage of PHP files';
-    }
-}
-```
-
-Configure the autoload on the `composer.json` file:
+Configure the autoload in `composer.json`:
 ```json
 "autoload": {
     "psr-4": {
@@ -134,7 +72,10 @@ There are two ways to collect the metrics: programmatically and by command-line.
 
 use EdisonLabs\Metrics\Collector;
 
-$collector = new Collector();
+$date = strtotime('yesterday');
+$config = array();
+
+$collector = new Collector($date, $config);
 $metrics = $collector->getMetrics();
 ```
 
@@ -183,10 +124,13 @@ class SqLite extends AbstractMetricDatastore
 use EdisonLabs\Metrics\Collector;
 use EdisonLabs\Metrics\DatastoreHandler;
 
-$collector = new Collector();
+$date = strtotime('yesterday');
+$config = array();
+
+$collector = new Collector($date, $config);
 $metrics = $collector->getMetrics();
 
-$datastoreHandler = new DatastoreHandler();
+$datastoreHandler = new DatastoreHandler($date, $config);
 $datastore = $datastoreHandler->getDatastoreByName('SQLite');
 $datastore->setMetrics($metrics);
 $datastore->save();

@@ -51,8 +51,14 @@ class MetricsCommand extends Command
 
         $this->config = $config;
 
+        // Gets the date.
+        $date = $input->getOption('date');
+        if (!$date = strtotime($date)) {
+            throw new RuntimeException('Invalid date string');
+        }
+
         // Sets datastore handler.
-        $this->datastoreHandler = new DatastoreHandler($this->config);
+        $this->datastoreHandler = new DatastoreHandler($date, $this->config);
 
         if ($input->getOption('list-datastores')) {
             return;
@@ -65,7 +71,7 @@ class MetricsCommand extends Command
         }
 
         // Gets metrics.
-        $collector = new Collector($groups, $this->config);
+        $collector = new Collector($date, $this->config, $groups);
         $this->metrics = $collector->getMetrics();
     }
 
@@ -83,7 +89,8 @@ class MetricsCommand extends Command
             ->addOption('save', null, InputOption::VALUE_REQUIRED, 'Save the metrics to target datastores')
             ->addOption('no-messages', null, InputOption::VALUE_NONE, 'Do not output messages')
             ->addOption('groups', null, InputOption::VALUE_REQUIRED, 'Collect metrics from specific groups only', array())
-            ->addOption('config', null, InputOption::VALUE_REQUIRED, 'Pass custom config to the metrics, which can be a file or a string containing JSON format');
+            ->addOption('config', null, InputOption::VALUE_REQUIRED, 'Pass custom config to the metrics, which can be a file or a string containing JSON format')
+            ->addOption('date', null, InputOption::VALUE_REQUIRED, 'Collect metrics from a specific date. Pass a string supported by strtotime()', 'yesterday')
         ;
     }
 

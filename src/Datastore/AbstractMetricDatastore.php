@@ -9,6 +9,11 @@ abstract class AbstractMetricDatastore implements MetricDatastoreInterface
 {
 
     /**
+     * @var string
+     */
+    protected $date;
+
+    /**
      * The metrics config.
      *
      * @var array
@@ -19,6 +24,15 @@ abstract class AbstractMetricDatastore implements MetricDatastoreInterface
      * @var array
      */
     protected $metrics = array();
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct($date, array $config = array())
+    {
+        $this->setDate($date);
+        $this->setConfig($config);
+    }
 
     /**
      * {@inheritdoc}
@@ -45,6 +59,22 @@ abstract class AbstractMetricDatastore implements MetricDatastoreInterface
     public function setMetrics(array $metrics)
     {
         $this->metrics = $metrics;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDate($date)
+    {
+        return $this->date = $date;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDate()
+    {
+        return $this->date;
     }
 
     /**
