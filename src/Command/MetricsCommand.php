@@ -90,7 +90,7 @@ class MetricsCommand extends Command
             ->addOption('no-messages', null, InputOption::VALUE_NONE, 'Do not output messages')
             ->addOption('groups', null, InputOption::VALUE_REQUIRED, 'Collect metrics from specific groups only', array())
             ->addOption('config', null, InputOption::VALUE_REQUIRED, 'Pass custom config to the metrics, which can be a file or a string containing JSON format')
-            ->addOption('date', null, InputOption::VALUE_REQUIRED, 'Collect metrics from a specific date. Pass a string supported by strtotime()', 'yesterday')
+            ->addOption('date', null, InputOption::VALUE_REQUIRED, 'Collect metrics from a specific date. Pass a string supported by strtotime()', 'now')
         ;
     }
 

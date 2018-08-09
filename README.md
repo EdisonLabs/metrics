@@ -72,7 +72,7 @@ There are two ways to collect the metrics: programmatically and by command-line.
 
 use EdisonLabs\Metrics\Collector;
 
-$date = strtotime('yesterday');
+$date = strtotime('now');
 $config = array();
 
 $collector = new Collector($date, $config);
@@ -124,7 +124,7 @@ class SqLite extends AbstractMetricDatastore
 use EdisonLabs\Metrics\Collector;
 use EdisonLabs\Metrics\DatastoreHandler;
 
-$date = strtotime('yesterday');
+$date = strtotime('now');
 $config = array();
 
 $collector = new Collector($date, $config);
