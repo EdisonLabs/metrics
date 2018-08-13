@@ -19,14 +19,12 @@ class ContainerBuilder
     /**
      * ContainerBuilder constructor.
      *
-     * @param string $date
-     *   The date (timestamp) of the metrics.
-     * @param array $config
-     *   The custom config array.
+     * @param int   $date   The date (timestamp) of the metrics.
+     * @param array $config The custom config array.
      *
      * @throws \Exception
      */
-    public function __construct($date, $config)
+    public function __construct($date = null, array $config = array())
     {
         $containerBuilder = new SymfonyContainerBuilder();
         $loader = new PhpFileLoader($containerBuilder, new FileLocator(__DIR__));
@@ -42,8 +40,7 @@ class ContainerBuilder
     /**
      * Returns the container builder instance.
      *
-     * @return SymfonyContainerBuilder
-     *   Container builder instance.
+     * @return SymfonyContainerBuilder Container builder instance.
      */
     public function getContainerBuilder()
     {

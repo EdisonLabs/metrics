@@ -35,12 +35,9 @@ class Collector
     /**
      * Collector constructor.
      *
-     * @param string $date
-     *   A date timestamp to collect for.
-     * @param array  $config
-     *   The custom config array.
-     * @param array  $groups
-     *   A list containing the groups to filter for.
+     * @param string $date   A date timestamp to collect for.
+     * @param array  $config The custom config array.
+     * @param array  $groups A list containing the groups to filter for.
      *
      * @throws \Exception
      */
@@ -55,8 +52,7 @@ class Collector
     /**
      * Register a metric to be collected.
      *
-     * @param AbstractMetricBase $metric
-     *   The Metric object.
+     * @param AbstractMetricBase $metric The Metric object.
      */
     public function setMetric(AbstractMetricBase $metric)
     {
@@ -66,8 +62,7 @@ class Collector
     /**
      * Returns the available metrics.
      *
-     * @return array
-     *   An array containing the metrics objects.
+     * @return array An array containing the metrics objects.
      */
     public function getMetrics()
     {
@@ -104,7 +99,6 @@ class Collector
                 continue;
             }
 
-            $metric->setConfig($this->config);
             $this->setMetric($metric);
         }
     }

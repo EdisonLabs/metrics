@@ -53,8 +53,7 @@ abstract class AbstractMetricDatastore implements MetricDatastoreInterface
     /**
      * Set the metrics to be saved.
      *
-     * @param array $metrics
-     *   An array containing the metrics objects.
+     * @param array $metrics An array containing the metrics objects.
      */
     public function setMetrics(array $metrics)
     {
@@ -80,8 +79,7 @@ abstract class AbstractMetricDatastore implements MetricDatastoreInterface
     /**
      * Returns the metrics that will be saved.
      *
-     * @return array
-     *   An array containing the metrics objects.
+     * @return array An array containing the metrics objects.
      */
     public function getMetrics()
     {

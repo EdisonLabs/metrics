@@ -97,11 +97,9 @@ class MetricsCommand extends Command
     /**
      * Converts and returns the config parameter value to array.
      *
-     * @param string $config
-     *   The config string.
+     * @param string $config The config string.
      *
-     * @return array
-     *   The config array.
+     * @return array The config array.
      */
     protected function getConfigArray($config)
     {
@@ -127,8 +125,7 @@ class MetricsCommand extends Command
     /**
      * Outputs the metrics on Json format.
      *
-     * @param OutputInterface $output
-     *   Console output object.
+     * @param OutputInterface $output Console output object.
      */
     protected function outputMetricsJson(OutputInterface $output)
     {
@@ -152,12 +149,9 @@ class MetricsCommand extends Command
     /**
      * Outputs a table.
      *
-     * @param array           $header
-     *   An array containing the header columns.
-     * @param array           $rows
-     *   An array containing the table rows.
-     * @param OutputInterface $output
-     *   Console output object.
+     * @param array           $header An array containing the header columns.
+     * @param array           $rows   An array containing the table rows.
+     * @param OutputInterface $output Console output object.
      */
     protected function outputTable(array $header, array $rows, OutputInterface $output)
     {
@@ -173,8 +167,7 @@ class MetricsCommand extends Command
     /**
      * Outputs the available datastores on table format.
      *
-     * @param OutputInterface $output
-     *   Console output object.
+     * @param OutputInterface $output Console output object.
      */
     protected function outputDatastoresTable(OutputInterface $output)
     {
@@ -195,8 +188,7 @@ class MetricsCommand extends Command
     /**
      * Outputs the metrics on table format.
      *
-     * @param OutputInterface $output
-     *   Console output object.
+     * @param OutputInterface $output Console output object.
      */
     protected function outputMetricsTable(OutputInterface $output)
     {

@@ -30,10 +30,8 @@ class DatastoreHandler
     /**
      * DatastoreHandler constructor.
      *
-     * @param string $date
-     *   The date (timestamp) of the metrics.
-     * @param array $config
-     *   The custom config array.
+     * @param string $date   The date (timestamp) of the metrics.
+     * @param array  $config The custom config array.
      *
      * @throws \Exception
      */
@@ -47,8 +45,7 @@ class DatastoreHandler
     /**
      * Sets a datastore.
      *
-     * @param MetricDatastoreInterface $datastore
-     *   The Metric Datastore object.
+     * @param MetricDatastoreInterface $datastore The Metric Datastore object.
      */
     public function setDatastore(MetricDatastoreInterface $datastore)
     {
@@ -79,8 +76,6 @@ class DatastoreHandler
                 continue;
             }
 
-            $datastore->setConfig($this->config);
-
             $this->setDatastore($datastore);
         }
     }
@@ -88,8 +83,7 @@ class DatastoreHandler
     /**
      * Returns the available datastores.
      *
-     * @return array
-     *   An array containing the datastores objects.
+     * @return array An array containing the datastores objects.
      */
     public function getDatastores()
     {
@@ -99,11 +93,9 @@ class DatastoreHandler
     /**
      * Returns a datastore by a given name.
      *
-     * @param string $datastoreName
-     *   The datastore name.
+     * @param string $datastoreName The datastore name.
      *
-     * @return object
-     *   The datastore object.
+     * @return object The datastore object.
      */
     public function getDatastoreByName($datastoreName)
     {
