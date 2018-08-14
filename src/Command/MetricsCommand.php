@@ -51,8 +51,14 @@ class MetricsCommand extends Command
 
         $this->config = $config;
 
+        // Gets the date.
+        $date = $input->getOption('date');
+        if (!$date = strtotime($date)) {
+            throw new RuntimeException('Invalid date string');
+        }
+
         // Sets datastore handler.
-        $this->datastoreHandler = new DatastoreHandler($this->config);
+        $this->datastoreHandler = new DatastoreHandler($date, $this->config);
 
         if ($input->getOption('list-datastores')) {
             return;
@@ -65,7 +71,7 @@ class MetricsCommand extends Command
         }
 
         // Gets metrics.
-        $collector = new Collector($groups, $this->config);
+        $collector = new Collector($date, $this->config, $groups);
         $this->metrics = $collector->getMetrics();
     }
 
@@ -83,18 +89,17 @@ class MetricsCommand extends Command
             ->addOption('save', null, InputOption::VALUE_REQUIRED, 'Save the metrics to target datastores')
             ->addOption('no-messages', null, InputOption::VALUE_NONE, 'Do not output messages')
             ->addOption('groups', null, InputOption::VALUE_REQUIRED, 'Collect metrics from specific groups only', array())
-            ->addOption('config', null, InputOption::VALUE_REQUIRED, 'Pass custom config to the metrics, which can be a file or a string containing JSON format');
+            ->addOption('config', null, InputOption::VALUE_REQUIRED, 'Pass custom config to the metrics, which can be a file or a string containing JSON format')
+            ->addOption('date', null, InputOption::VALUE_REQUIRED, 'Collect metrics from a specific date. Pass a string supported by strtotime()', 'now')
         ;
     }
 
     /**
      * Converts and returns the config parameter value to array.
      *
-     * @param string $config
-     *   The config string.
+     * @param string $config The config string.
      *
-     * @return array
-     *   The config array.
+     * @return array The config array.
      */
     protected function getConfigArray($config)
     {
@@ -120,8 +125,7 @@ class MetricsCommand extends Command
     /**
      * Outputs the metrics on Json format.
      *
-     * @param OutputInterface $output
-     *   Console output object.
+     * @param OutputInterface $output Console output object.
      */
     protected function outputMetricsJson(OutputInterface $output)
     {
@@ -145,12 +149,9 @@ class MetricsCommand extends Command
     /**
      * Outputs a table.
      *
-     * @param array           $header
-     *   An array containing the header columns.
-     * @param array           $rows
-     *   An array containing the table rows.
-     * @param OutputInterface $output
-     *   Console output object.
+     * @param array           $header An array containing the header columns.
+     * @param array           $rows   An array containing the table rows.
+     * @param OutputInterface $output Console output object.
      */
     protected function outputTable(array $header, array $rows, OutputInterface $output)
     {
@@ -166,8 +167,7 @@ class MetricsCommand extends Command
     /**
      * Outputs the available datastores on table format.
      *
-     * @param OutputInterface $output
-     *   Console output object.
+     * @param OutputInterface $output Console output object.
      */
     protected function outputDatastoresTable(OutputInterface $output)
     {
@@ -188,8 +188,7 @@ class MetricsCommand extends Command
     /**
      * Outputs the metrics on table format.
      *
-     * @param OutputInterface $output
-     *   Console output object.
+     * @param OutputInterface $output Console output object.
      */
     protected function outputMetricsTable(OutputInterface $output)
     {

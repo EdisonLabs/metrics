@@ -7,13 +7,28 @@ namespace EdisonLabs\Metrics\Metric;
  */
 abstract class AbstractMetricBase implements MetricInterface
 {
+    /**
+     * The metric date (timestamp).
+     *
+     * @var string
+     */
+    protected $date;
 
     /**
-     * The metrics config.
+     * The metric config.
      *
      * @var array
      */
     protected $config;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct($date, array $config = array())
+    {
+        $this->setDate($date);
+        $this->setConfig($config);
+    }
 
     /**
      * {@inheritdoc}
@@ -29,6 +44,22 @@ abstract class AbstractMetricBase implements MetricInterface
     public function getConfig()
     {
         return $this->config;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDate($date)
+    {
+        return $this->date = $date;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDate()
+    {
+        return $this->date;
     }
 
     /**

@@ -17,6 +17,8 @@ $finder->name('EdisonLabs');
 if ($finder->count() !== 0) {
     $definition = new Definition();
     $definition
+        ->addArgument('%metrics.date%')
+        ->addArgument('%metrics.config%')
         ->setAutowired(true)
         ->setAutoconfigured(true)
         ->setPublic(true);

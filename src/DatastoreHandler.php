@@ -13,6 +13,11 @@ class DatastoreHandler
     const DATASTORE_NAMESPACE = 'EdisonLabs\Metric\Datastore';
 
     /**
+     * @var string
+     */
+    protected $date;
+
+    /**
      * @var array
      */
     protected $config;
@@ -25,22 +30,22 @@ class DatastoreHandler
     /**
      * DatastoreHandler constructor.
      *
-     * @param array $config
-     *   The custom config array.
+     * @param string $date   The date (timestamp) of the metrics.
+     * @param array  $config The custom config array.
      *
      * @throws \Exception
      */
-    public function __construct(array $config = array())
+    public function __construct($date, array $config = array())
     {
         $this->config = $config;
+        $this->date = $date;
         $this->setDatastores();
     }
 
     /**
      * Sets a datastore.
      *
-     * @param MetricDatastoreInterface $datastore
-     *   The Metric Datastore object.
+     * @param MetricDatastoreInterface $datastore The Metric Datastore object.
      */
     public function setDatastore(MetricDatastoreInterface $datastore)
     {
@@ -54,7 +59,7 @@ class DatastoreHandler
      */
     public function setDatastores()
     {
-        $containerBuilder = new ContainerBuilder();
+        $containerBuilder = new ContainerBuilder($this->date, $this->config);
         $containerBuilder = $containerBuilder->getContainerBuilder();
 
         $services = $containerBuilder->getServiceIds();
@@ -71,8 +76,6 @@ class DatastoreHandler
                 continue;
             }
 
-            $datastore->setConfig($this->config);
-
             $this->setDatastore($datastore);
         }
     }
@@ -80,8 +83,7 @@ class DatastoreHandler
     /**
      * Returns the available datastores.
      *
-     * @return array
-     *   An array containing the datastores objects.
+     * @return array An array containing the datastores objects.
      */
     public function getDatastores()
     {
@@ -91,11 +93,9 @@ class DatastoreHandler
     /**
      * Returns a datastore by a given name.
      *
-     * @param string $datastoreName
-     *   The datastore name.
+     * @param string $datastoreName The datastore name.
      *
-     * @return object
-     *   The datastore object.
+     * @return object The datastore object.
      */
     public function getDatastoreByName($datastoreName)
     {
