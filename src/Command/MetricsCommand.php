@@ -72,7 +72,18 @@ class MetricsCommand extends Command
 
         // Gets metrics.
         $collector = new Collector($date, $this->config, $groups);
-        $this->metrics = $collector->getMetrics();
+        $metrics = $collector->getMetrics();
+        $this->setMetrics($metrics);
+    }
+
+    /**
+     * Sets metrics.
+     *
+     * @param array $metrics An array containing the metrics to set.
+     */
+    public function setMetrics(array $metrics)
+    {
+        $this->metrics = array_merge($this->metrics, $metrics);
     }
 
     /**

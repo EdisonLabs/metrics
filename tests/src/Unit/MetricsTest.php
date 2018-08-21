@@ -4,7 +4,6 @@ namespace EdisonLabs\Metrics\Unit;
 
 use EdisonLabs\Metrics\Collector;
 use EdisonLabs\Metrics\ContainerBuilder;
-use PHPUnit\Framework\Constraint\IsInstanceOf;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -52,8 +51,10 @@ class MetricsTest extends TestCase
      */
     public function testCollector()
     {
-        $collector = new Collector();
+        $date = time();
+        $collector = new Collector($date);
         $metric = $this->getMockBuilder('EdisonLabs\Metrics\Metric\AbstractMetricBase')
+            ->setConstructorArgs(array(time()))
             ->getMockForAbstractClass();
         $collector->setMetric($metric);
         $metrics = $collector->getMetrics();
@@ -69,17 +70,18 @@ class MetricsTest extends TestCase
     public function testAbstractMetricBase()
     {
         $abstractMetricBaseMock = $this->getMockBuilder('EdisonLabs\Metrics\Metric\AbstractMetricBase')
-          ->setMethods(['getMetric', 'getDescription', 'getName'])
-          ->getMockForAbstractClass();
+            ->setMethods(['getMetric', 'getDescription', 'getName'])
+            ->setConstructorArgs(array(time()))
+            ->getMockForAbstractClass();
         $abstractMetricBaseMock->expects($this->once())
-          ->method('getMetric')
-          ->willReturn(666);
+            ->method('getMetric')
+            ->willReturn(666);
         $abstractMetricBaseMock->expects($this->once())
-          ->method('getDescription')
-          ->willReturn('Test metric description');
+            ->method('getDescription')
+            ->willReturn('Test metric description');
         $abstractMetricBaseMock->expects($this->once())
-          ->method('getName')
-          ->willReturn('Test metric');
+            ->method('getName')
+            ->willReturn('Test metric');
 
         $configuration = ['test' => '123'];
         $abstractMetricBaseMock->setConfig($configuration);
@@ -95,53 +97,25 @@ class MetricsTest extends TestCase
     }
 
     /**
-     * Covers \EdisonLabs\Metrics\Metric\AbstractMetricPercentage
-     */
-    public function testAbstractMetricPercentage()
-    {
-        $count = $this->getMockBuilder('EdisonLabs\Metrics\Metric\AbstractMetricBase')
-            ->setMethods(['getMetric'])
-            ->getMockForAbstractClass();
-        $count->expects($this->once())
-            ->method('getMetric')
-            ->willReturn(3);
-
-        $total = $this->getMockBuilder('EdisonLabs\Metrics\Metric\AbstractMetricBase')
-            ->setMethods(['getMetric'])
-            ->getMockForAbstractClass();
-        $total->expects($this->once())
-            ->method('getMetric')
-            ->willReturn(10);
-
-        $metricPercentage = $this->getMockBuilder('EdisonLabs\Metrics\Metric\AbstractMetricPercentage')
-            ->setConstructorArgs([$count, $total]);
-        $metricPercentage = $metricPercentage->getMockForAbstractClass();
-
-        $metric = $metricPercentage->getMetric();
-        $this->assertNotNull($metric);
-        $this->assertEquals(30, $metric);
-    }
-
-    /**
      * Covers \EdisonLabs\Metrics\DatastoreHandler
      */
     public function testDatastoreHandler()
     {
         $dataStore = $this->getMockBuilder('EdisonLabs\Metrics\Datastore\MetricDatastoreInterface')
-            ->setMethods(['getName', 'getDescription', 'setConfig', 'getConfig', 'save'])
+            ->setMethods(['getName', 'getDescription', 'setConfig', 'getConfig', 'setDate', 'getDate', 'save', '__construct'])
             ->getMock();
         $dataStore->expects($this->once())
             ->method('getName')
             ->willReturn('test');
 
         $datastoreHandler = $this->getMockBuilder('EdisonLabs\Metrics\DatastoreHandler')
-            ->setMethods(['getDatastores'])
-            ->getMock();
-        $datastoreHandler->expects($this->any())
-            ->method('getDatastores')
-            ->willReturn([$dataStore]);
+            ->setConstructorArgs(array(time()))
+            ->getMockForAbstractClass();
+        $datastoreHandler->setDatastore($dataStore);
 
-        $this->assertNotNull($datastoreHandler->getDatastores());
+        $datastores = $datastoreHandler->getDatastores();
+
+        $this->assertNotNull($datastores);
         $this->assertEquals($dataStore, $datastoreHandler->getDatastoreByName('test'));
     }
 
@@ -152,6 +126,7 @@ class MetricsTest extends TestCase
     {
         $abstractMetricDatastoreMock = $this->getMockBuilder('EdisonLabs\Metrics\Datastore\AbstractMetricDatastore')
             ->setMethods(['getDescription', 'getName', 'save'])
+            ->setConstructorArgs(array(time()))
             ->getMockForAbstractClass();
         $abstractMetricDatastoreMock->expects($this->once())
             ->method('getDescription')
@@ -170,6 +145,7 @@ class MetricsTest extends TestCase
 
         $metric = $this->getMockBuilder('EdisonLabs\Metrics\Metric\AbstractMetricBase')
             ->setMethods(['getMetric'])
+            ->setConstructorArgs(array(time()))
             ->getMockForAbstractClass();
         $metric->method('getMetric')
             ->willReturn(10);

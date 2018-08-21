@@ -33,9 +33,6 @@ class MetricsCommandTest extends TestCase
                 }
             }
         }
-
-        // Create a temporal sqlite db file.
-        new \PDO("sqlite:/tmp/metricsdatastoresqlitetest.sqlite");
     }
 
     /**
@@ -44,6 +41,23 @@ class MetricsCommandTest extends TestCase
     public function testMetricsCommand()
     {
         $command = new MetricsCommand();
+
+        // Set metric.
+        $metric = $this->getMockBuilder('EdisonLabs\Metrics\Metric\AbstractMetricBase')
+          ->setMethods(array('getMetric', 'getName', 'getDescription', 'getGroups'))
+          ->setConstructorArgs(array(time()))
+          ->getMockForAbstractClass();
+        $metric->method('getMetric')
+          ->willReturn(10);
+        $metric->method('getName')
+          ->willReturn('Test metric name');
+        $metric->method('getDescription')
+          ->willReturn('Test metric description');
+        $metric->method('getGroups')
+          ->willReturn(array('group_test'));
+        $command->setMetrics(array($metric));
+
+        // Test command options.
         $this->assertEquals('edisonlabs:metrics', $command->getName());
         $this->assertEquals('Edison Labs metrics collector', $command->getDescription());
         $this->assertTrue($command->getDefinition()->hasOption('format'));
@@ -54,16 +68,30 @@ class MetricsCommandTest extends TestCase
         $this->assertTrue($command->getDefinition()->hasOption('config'));
 
         $tester = new CommandTester($command);
-        // @TODO Figure out how get the command to use a valid datastore.
-        $config = [];
-        $tester->execute([
+
+        // Test 'list-datastores'.
+        $tester->execute(array(
+            '--list-datastores' => null,
+        ));
+        $output = $tester->getDisplay();
+        $this->assertContains('| Name | Description |', $output);
+
+        // Test metric output table.
+        $tester->execute(array());
+        $output = $tester->getDisplay();
+        $this->assertContains('| Test metric name | Test metric description | group_test | 10    |', $output);
+
+        // Test other options.
+        $config = '{"key": "value"}';
+        $tester->execute(array(
             '--config' => $config,
+            '--groups' => 'group_test',
             '--save' => 'SQLite',
             '--format' => 'json',
-        ]);
+        ));
         $this->assertEquals(0, $tester->getStatusCode());
-        $result = $tester->getDisplay();
-        // print_r($result);
-        $this->assertContains('[WARNING] Unable to find datastore SQLite', $result);
+        $output = $tester->getDisplay();
+        $this->assertContains('[WARNING] Unable to find datastore SQLite', $output);
+        $this->assertContains('{"name":"Test metric name","description":"Test metric description","groups":["group_test"],"value":10}}', $output);
     }
 }
