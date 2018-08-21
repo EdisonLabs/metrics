@@ -39,6 +39,16 @@ class MetricsCommand extends Command
     protected $io;
 
     /**
+     * Sets metrics.
+     *
+     * @param array $metrics An array containing the metrics to set.
+     */
+    public function setMetrics(array $metrics)
+    {
+        $this->metrics = array_merge($this->metrics, $metrics);
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function initialize(InputInterface $input, OutputInterface $output)
@@ -74,16 +84,6 @@ class MetricsCommand extends Command
         $collector = new Collector($date, $this->config, $groups);
         $metrics = $collector->getMetrics();
         $this->setMetrics($metrics);
-    }
-
-    /**
-     * Sets metrics.
-     *
-     * @param array $metrics An array containing the metrics to set.
-     */
-    public function setMetrics(array $metrics)
-    {
-        $this->metrics = array_merge($this->metrics, $metrics);
     }
 
     /**
